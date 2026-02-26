@@ -3,9 +3,8 @@
 //
 
 #include "game_object.h"
-
-#include "fsm.h"
 #include "physics.h"
+#include "fsm.h"
 #include "action.h"
 
 GameObject::GameObject(const Vec<float>& position, const Vec<float>& size, World& world, FSM* fsm, Color color)
@@ -22,13 +21,17 @@ void GameObject::input(World& world) {
     const bool *key_states = SDL_GetKeyboardState(NULL);
 
     ActionType action_type = ActionType::None;
-    // //velocity.x = velocity.y = 0;
-    // if (key_states[SDL_SCANCODE_A]) {
-    //     physics.acceleration.x -= physics.walk_acceleration;
-    // }
-    // if (key_states[SDL_SCANCODE_D]) {
-    //     physics.acceleration.x += physics.walk_acceleration;
-    // }
+    if (key_states[SDL_SCANCODE_A] && key_states[SDL_SCANCODE_D]) {
+        action_type = ActionType::None;
+    } else {
+        if (key_states[SDL_SCANCODE_A]) {
+            action_type = ActionType::MoveLeft;
+        }
+        if (key_states[SDL_SCANCODE_D]) {
+            action_type = ActionType::MoveRight;
+        }
+    }
+
     if (key_states[SDL_SCANCODE_SPACE]) {
         action_type = ActionType::Jump;
     }

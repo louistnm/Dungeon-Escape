@@ -10,8 +10,8 @@ class Action;
 enum class ActionType;
 class State;
 
-enum class StateType{Standing, InAir};
-enum class Transition{Jump, Stop};
+enum class StateType{Standing, InAir, Running}; //do stuff based off of appropriate things
+enum class Transition{Jump, Stop, Move}; //key current state - going to next state
 
 using Transitions = std::map<std::pair<StateType, Transition>, StateType>;
 using States = std::map<StateType, State*>;
@@ -40,5 +40,7 @@ public:
     virtual Action* input(World&, GameObject&, ActionType) {return nullptr;}
     virtual void update(World&, GameObject&, [[maybe_unused]]double dt){} //decorator that clears a warning
 
+
 };
+
 
