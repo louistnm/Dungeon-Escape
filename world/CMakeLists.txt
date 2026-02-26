@@ -8,6 +8,8 @@ add_library(world
         action.cpp action.h
         fsm.cpp fsm.h
         states.h states.cpp
+        input.cpp input.h
+        keyboard_input.h keyboard_input.cpp
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,0 +1,39 @@
+//
+// Created by Louis Tennier on 2/26/26.
+//
+
+#include "keyboard_input.h"
+#include "game_object.h"
+#include "fsm.h"
+
+void Keyboard_Input::get_input() {
+    if (next_action_type == ActionType::Jump) return;
+
+    const bool *key_states = SDL_GetKeyboardState(NULL);
+
+    if (key_states[SDL_SCANCODE_A]) {
+        next_action_type = ActionType::MoveLeft;
+    }
+    if (key_states[SDL_SCANCODE_D]) {
+        next_action_type = ActionType::MoveRight;
+    }
+}
+
+void Keyboard_Input::handle_input(World& world, GameObject& obj) {
+    Action* action = obj.fsm->current_state->input(world, obj, next_action_type);
+
+    //consume action
+    next_action_type = ActionType::None;
+    if (action != nullptr) {
+        action->perform(world, obj);
+        delete action; // after action is completed, delete the pointer
+    }
+}
+
+void Keyboard_Input::collect_discrete_event(SDL_Event* event) {
+    if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0) {
+        if (event->key.scancode == SDL_SCANCODE_SPACE) {
+            next_action_type = ActionType::Jump;
+        }
+    }
+}

@@ -4,6 +4,8 @@
 
 #include "game.h"
 
+#include "input.h"
+
 Game::Game(std::string title, int width, int height)
     : graphics{title, width, height}, world{31,11}, camera{graphics, 64}, dt{1.0/60.0}, lag{0.0},
 performance_frequency{SDL_GetPerformanceFrequency()},
@@ -25,7 +27,7 @@ prev_counter{SDL_GetPerformanceCounter()} { //constructing private data in initi
 }
 
 void Game::input() {
-    player->input(world);
+    player->input->get_input();
     camera.handle_input();
 }
 

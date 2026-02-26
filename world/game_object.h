@@ -5,15 +5,15 @@
 #include "physics.h"
 
 class FSM; //don't need all of FSM, so forward-declaring saves time
-
+class Input;
 class World;
+
 class GameObject {
 public:
 
-    GameObject(const Vec<float>& position, const Vec<float>& size, World& world, FSM* fsm, Color color);
+    GameObject(const Vec<float>& position, const Vec<float>& size, World& world, FSM* fsm, Input* input, Color color);
     ~GameObject();
 
-    void input(World& world);
     void update(World& world, double dt);
 
 
@@ -24,5 +24,6 @@ public:
     Vec<float> size;
     Physics physics;
     FSM* fsm;
+    Input* input;
     Color color;
 };

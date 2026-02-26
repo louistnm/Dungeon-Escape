@@ -5,6 +5,7 @@
 class Game {
 public:
     Game(std::string title, int width, int height);
+    void handle_event(SDL_Event* event);
     void input();
     void update();
     void render();

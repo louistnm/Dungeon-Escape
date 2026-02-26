@@ -4,6 +4,7 @@
 #include "fsm.h"
 #include "physics.h"
 #include "states.h"
+#include "keyboard_input.h"
 
 World::World(int width, int height)
     : tilemap{width,height} {}
@@ -39,7 +40,10 @@ GameObject* World::create_player() {
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
-    player = std::make_unique<GameObject>(Vec<float>{10, 5}, Vec<float>{1,1}, *this, fsm, Color{255, 0, 0, 255});
+    //player input
+    Keyboard_Input* input = new Keyboard_Input();
+
+    player = std::make_unique<GameObject>(Vec<float>{10, 5}, Vec<float>{1,1}, *this, fsm, input, Color{255, 0, 0, 255});
     return player.get();
 }
 
