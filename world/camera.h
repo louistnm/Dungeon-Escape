@@ -7,6 +7,8 @@
 
 class Graphics;
 class Color;
+class Sprite;
+class GameObject;
 
 class Camera {
 public:
@@ -19,14 +21,16 @@ public:
 
     void render(const Vec<float>& position, const Color& color, bool filled=true) const;
     void render(const Tilemap& tilemap) const;
+    void render(const Vec<float>& position, const Sprite& sprite) const;
+    void render(const GameObject& obj) const;
 
-    Physics physics;
 
 private:
     Graphics& graphics;
     float tilesize;
     Vec<float> location;
     Toggle grid_toggle;
+    Physics physics;
 
     void calculate_visible_tiles();
     Vec<int> visible_min, visible_max;

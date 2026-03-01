@@ -4,6 +4,7 @@
 
 #include "game.h"
 
+#include "asset_manager.h"
 #include "input.h"
 
 Game::Game(std::string title, int width, int height)
@@ -23,7 +24,13 @@ prev_counter{SDL_GetPerformanceCounter()} { //constructing private data in initi
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
+    player->sprite = AssetManager::get_game_object_sprite("player", graphics);
+
     camera.set_location(player->physics.position);
+}
+
+void Game::handle_event(SDL_Event* event) {
+    player->input->collect_discrete_event(event);
 }
 
 void Game::input() {
@@ -36,6 +43,7 @@ void Game::update() {
     lag += (now - prev_counter) / (float)performance_frequency; //casting C style cause SDL is C
     prev_counter = now;
     while (lag >= dt) {
+        player->input->handle_input(world, *player);
         player->update(world, dt); //player update before world
         world.update(dt);
         //put the camera slightly ahead of the player
@@ -54,10 +62,11 @@ void Game::render() {
     camera.render(world.tilemap);
 
     //draw the player
-    auto [player_position, color] = player->get_sprite();
-    camera.render(player_position, color);
+
+    camera.render(*player);
 
     //update()
     graphics.update();
 }
+
 

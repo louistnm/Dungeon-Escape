@@ -26,4 +26,5 @@ public:
     FSM* fsm;
     Input* input;
     Color color;
+    Sprite sprite;
 };

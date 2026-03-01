@@ -9,7 +9,7 @@
 
 Sprite AssetManager::get_game_object_sprite(const std::string& name, Graphics& graphics) {
     auto path_start = std::filesystem::current_path() / "assets";
-    auto path = path_start/ (name+ ".json");
+    auto path = path_start / (name+ ".json");
 
     std::ifstream file(path);
     if (!file) {
