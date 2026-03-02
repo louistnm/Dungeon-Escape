@@ -97,7 +97,7 @@ void Sprinting::on_enter(World&, GameObject& obj) {
 
 Action* Sprinting::input(World& world, GameObject& obj, ActionType action_type) {
     if (action_type == ActionType::None) {
-        obj.fsm->transition(Transition::Sprint, world, obj);
+        obj.fsm->transition(Transition::Stop, world, obj);
     } else if (action_type == ActionType::MoveRight) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveRight;

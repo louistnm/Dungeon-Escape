@@ -10,19 +10,18 @@ void Keyboard_Input::get_input() {
     if (next_action_type == ActionType::Jump) return;
 
     const bool *key_states = SDL_GetKeyboardState(NULL);
-    if (key_states[SDL_SCANCODE_LSHIFT]) {
+    if (key_states[SDL_SCANCODE_A]) {
+        next_action_type = ActionType::MoveLeft;
+    }
+    if (key_states[SDL_SCANCODE_D]) {
+        next_action_type = ActionType::MoveRight;
+    }
+    if (key_states[SDL_SCANCODE_LSHIFT]){
         if (key_states[SDL_SCANCODE_A]) {
             next_action_type = ActionType::SprintLeft;
         }
         if (key_states[SDL_SCANCODE_D]) {
             next_action_type = ActionType::SprintRight;
-        }
-    } else {
-        if (key_states[SDL_SCANCODE_A]) {
-            next_action_type = ActionType::MoveLeft;
-        }
-        if (key_states[SDL_SCANCODE_D]) {
-            next_action_type = ActionType::MoveRight;
         }
     }
 
