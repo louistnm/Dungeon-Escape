@@ -1,6 +1,6 @@
 {
   "idle" : {
-    "filename" : "player_idle.png",
+    "filename" : "_Idle.png",
     "location" : [0,0],
     "size" : [32,32],
     "scale" : 2

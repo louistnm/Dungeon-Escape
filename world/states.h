@@ -21,3 +21,9 @@ public:
     const double cooldown = 0.1; //seconds
     double elapsed = 0;
 };
+
+class Sprinting : public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    Action* input(World&, GameObject&, ActionType) override;
+};

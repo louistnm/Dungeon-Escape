@@ -35,6 +35,12 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
     } else if (action_type == ActionType::MoveLeft) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveLeft();
+    } else if (action_type == ActionType::SprintRight) {
+        obj.fsm->transition(Transition::Sprint, world, obj);
+        return new SprintRight();
+    } else if (action_type == ActionType::SprintLeft) {
+        obj.fsm->transition(Transition::Sprint, world, obj);
+        return new SprintLeft();
     }
     return nullptr;
 }
@@ -68,9 +74,39 @@ void Running::on_enter(World&, GameObject& obj) {
 Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
     if (action_type == ActionType::None) {
         obj.fsm->transition(Transition::Stop, world, obj);
+    } else if (action_type == ActionType::SprintRight) {
+        obj.fsm->transition(Transition::Sprint, world, obj);
+        return new SprintRight();
+    } else if (action_type == ActionType::SprintLeft) {
+        obj.fsm->transition(Transition::Sprint, world, obj);
+        return new SprintLeft();
     } else if (action_type == ActionType::Jump) {
         obj.fsm->transition(Transition::Jump, world, obj);
         return new Jump(); //starts physics of jumping
+    }
+    return nullptr;
+}
+
+////////
+///Sprinting
+////////
+
+void Sprinting::on_enter(World&, GameObject& obj) {
+    obj.color = {0, 255, 255, 255};
+}
+
+Action* Sprinting::input(World& world, GameObject& obj, ActionType action_type) {
+    if (action_type == ActionType::None) {
+        obj.fsm->transition(Transition::Sprint, world, obj);
+    } else if (action_type == ActionType::MoveRight) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveRight;
+    } else if (action_type == ActionType::MoveLeft) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveLeft;
+    } else if (action_type == ActionType::Jump) {
+        obj.fsm->transition(Transition::Jump, world, obj);
+        return new Jump();
     }
     return nullptr;
 }
