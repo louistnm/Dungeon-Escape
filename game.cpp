@@ -24,7 +24,7 @@ prev_counter{SDL_GetPerformanceCounter()} { //constructing private data in initi
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
-    player->sprite = AssetManager::get_game_object_sprite("_Idle", graphics);
+    player->sprite = AssetManager::get_game_object_sprite("_idle", graphics);
 
     camera.set_location(player->physics.position);
 }
