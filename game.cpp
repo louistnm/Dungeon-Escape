@@ -5,6 +5,7 @@
 #include "game.h"
 
 #include "asset_manager.h"
+#include "fsm.h"
 #include "input.h"
 
 Game::Game(std::string title, int width, int height)
@@ -24,8 +25,8 @@ prev_counter{SDL_GetPerformanceCounter()} { //constructing private data in initi
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
-    player->sprite = AssetManager::get_game_object_sprite("_idle", graphics);
-
+    AssetManager::get_game_object_details("player", graphics, *player);
+    player->fsm->current_state->on_enter(world, *player);
     camera.set_location(player->physics.position);
 }
 
@@ -68,5 +69,6 @@ void Game::render() {
     //update()
     graphics.update();
 }
+
 
 
