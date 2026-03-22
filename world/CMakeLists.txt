@@ -10,7 +10,9 @@ add_library(world
         states.h states.cpp
         input.cpp input.h
         keyboard_input.h keyboard_input.cpp
+        audio.cpp audio.h
+        level.cpp level.h
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(world PUBLIC SDL3::SDL3 utility graphics)
+target_link_libraries(world PUBLIC SDL3::SDL3 SDL3_mixer::SDL3_mixer utility graphics)

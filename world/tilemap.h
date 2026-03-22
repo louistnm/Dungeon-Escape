@@ -1,12 +1,20 @@
 #pragma once
 #include <vector>
 
-enum class Tile{Open, Platform};
+#include "sprite.h"
+
+class Tile {
+public:
+    Sprite sprite;
+    bool blocking{false};
+    std::string id;
+};
+
 class Tilemap {
 public:
     Tilemap(int width, int height);
 
-    //access tiles
+    // access tiles
     const Tile& operator()(int x, int y) const;
     Tile& operator()(int x, int y);
 

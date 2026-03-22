@@ -12,7 +12,7 @@ World::World(int width, int height)
 void World::add_platform(float x, float y, float width, float height) {
     for (int i{0}; i < height; ++i) {
         for (int j{0}; j < width; ++j) {
-            tilemap(x+j, y+i) = Tile::Platform;
+            tilemap(x+j, y+i) = Tile{};
         }
     }
 }
@@ -20,7 +20,7 @@ void World::add_platform(float x, float y, float width, float height) {
 bool World::collides(const Vec<float>& position) const {
     int x = std::floor(position.x);
     int y = std::floor(position.y);
-    return tilemap(x,y) == Tile::Platform;
+    return tilemap(x,y).blocking;
 }
 
 GameObject* World::create_player() {
