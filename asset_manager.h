@@ -55,7 +55,7 @@ inline void from_json(const nlohmann::json& j, Level& level) {
 // these are for the json library - NOTE: if I want this to be more flexible, I create my own to/from json functions and can provide default values. Then json is strict formatted
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, name, filename, location, size, scale, dt_per_frame, number_of_frames);
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Physics, position, velocity, acceleration, gravity, damping, walk_acceleration, jump_velocity, terminal_velocity);
-
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, sprite, blocking, event_name);
 namespace AssetManager {
     void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj);
     void get_level_details(Graphics& graphics, Level& level);

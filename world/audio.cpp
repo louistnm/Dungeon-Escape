@@ -60,7 +60,7 @@ void Audio::play_sounds(const std::string& sound_name, bool loop_forever_in_back
         SDL_PropertiesID props = SDL_CreateProperties();
         SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
         MIX_SetTrackAudio(background_music, sound->second);
-        if(!MIX_PlayTrack(background_music, props)) {
+         if(!MIX_PlayTrack(background_music, props)) {
             std::string msg {SDL_GetError()};
             throw std::runtime_error(msg + "\nUnable to play sound from: " + sound_name);
         }

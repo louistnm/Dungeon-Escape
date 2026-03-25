@@ -7,8 +7,8 @@
 #include "fsm.h"
 #include "input.h"
 
-GameObject::GameObject(const Vec<float>& size, World& world, FSM* fsm, Input* input, Color color)
-    : size{size}, fsm{fsm}, input{input}, color{color} {}
+GameObject::GameObject(const Vec<float>& position, const Vec<float>& size, World& world, FSM* fsm, Input* input, Color color)
+    : position{position}, size{size}, fsm{fsm}, input{input}, color{color} {}
 
 GameObject::~GameObject() {
     delete fsm;

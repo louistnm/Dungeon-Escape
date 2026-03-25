@@ -9,7 +9,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
         return SDL_APP_FAILURE;
     }
 
-    auto game = new Game("Platforming With a White Box", 1280, 720);
+    auto game = new Game("Dungeon-Escape", 1280, 720);
     *appstate = game;
 
     return SDL_APP_CONTINUE;

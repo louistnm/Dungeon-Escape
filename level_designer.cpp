@@ -8,14 +8,14 @@
 const int TILESIZE = 64;
 const int VISIBLE_MAP_WIDTH = 14;
 const int VISIBLE_MAP_HEIGHT = 12;
-constexpr int COLUMNS = 5;
+constexpr int COLUMNS = 11;
 constexpr float PADDING = 16.0f;
 
 LevelDesigner::LevelDesigner(const std::string &level_name, int width, int height)
     : graphics{"Level Designer", 1280, 720}, tilemap{width, height}, level{level_name},
     dt{0.1}, performance_frequency{SDL_GetPerformanceFrequency()}, prev_counter{SDL_GetPerformanceCounter()}, lag{0.0},
-    display_rect{0.0f, 0.0f, graphics.width*(2.0f/3.0f), static_cast<float>(graphics.height)},
-    tiles_rect{graphics.width*(2.0f/3.0f), 0.0f, graphics.width*(1.0f/3.0f), static_cast<float>(graphics.height)}{
+    display_rect{0.0f, 0.0f, graphics.width*(1.0f/3.0f), static_cast<float>(graphics.height)},
+    tiles_rect{graphics.width*(1.0f/3.0f), 0.0f, graphics.width*(2.0f/3.0f), static_cast<float>(graphics.height)}{
     update_title();
 
     AssetManager::get_level_details(graphics, level);

@@ -5,9 +5,13 @@
 #include "physics.h"
 #include "states.h"
 #include "keyboard_input.h"
+#include "level.h"
+#include "audio.h"
 
-World::World(int width, int height)
-    : tilemap{width,height} {}
+World::World(const Level& level, Audio& audio)
+    : tilemap{level.width,level.height}, audio{&audio} {
+    load_level(level);
+}
 
 void World::add_platform(float x, float y, float width, float height) {
     for (int i{0}; i < height; ++i) {
@@ -18,12 +22,18 @@ void World::add_platform(float x, float y, float width, float height) {
 }
 
 bool World::collides(const Vec<float>& position) const {
+    if (position.x < 0 || position.x >= tilemap.width) {
+        return true;
+    }
+    if (position.y < 0 || position.y >= tilemap.height) {
+        return true;
+    }
     int x = std::floor(position.x);
     int y = std::floor(position.y);
     return tilemap(x,y).blocking;
 }
 
-GameObject* World::create_player() {
+GameObject* World::create_player(const Level& level) {
     // Create FSM
     Transitions transitions = {
         {{StateType::Standing, Transition::Jump}, StateType::InAir}, //if standing and jump, go to inair
@@ -49,8 +59,8 @@ GameObject* World::create_player() {
     //player input
     Keyboard_Input* input = new Keyboard_Input();
 
-    player = std::make_unique<GameObject>(Vec<float>{1,1}, *this, fsm, input, Color{255, 0, 0, 255});
-    return player.get();
+    player = new GameObject(Vec<float>{static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)}, Vec<float>{1,2}, *this, fsm, input, Color{255,0,0,255});
+    return player;
 }
 
 void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity) {
@@ -129,10 +139,10 @@ void World::update(float dt) {
     velocity += 0.5f * acceleration * dt;
     position += velocity*dt;
     velocity += 0.5f * acceleration * dt; //calculate half the velocity before position calculation and half after
-    velocity.x *= physics.damping;
+    velocity.x *= player->physics.damping;
 
-    velocity.x = std::clamp(velocity.x, -physics.terminal_velocity, physics.terminal_velocity);
-    velocity.y = std::clamp(velocity.y, -physics.terminal_velocity, physics.terminal_velocity);
+    velocity.x = std::clamp(velocity.x, -player->physics.terminal_velocity, player->physics.terminal_velocity);
+    velocity.y = std::clamp(velocity.y, -player->physics.terminal_velocity, player->physics.terminal_velocity);
 
     // check for collisions in the world - x direction
     Vec<float> future_position{position.x, player->physics.position.y};
@@ -147,4 +157,12 @@ void World::update(float dt) {
     player->physics.velocity = future_velocity;
 
 }
+
+void World::load_level(const Level& level) {
+    for (const auto& [pos, tile_id] : level.tile_locations) {
+        tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
+    }
+    audio->load_sounds({});
+}
+
 
