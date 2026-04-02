@@ -1,0 +1,20 @@
+{
+    "height": 100,
+    "player_spawn_location": [
+        0,
+        0
+    ],
+    "tile_filenames": [
+        "dungeon_sprites.json"
+    ],
+    "tiles": [
+        {
+            "pos": [
+                0,
+                0
+            ],
+            "tile": "dungeon_sprites.json:wall_left_middle"
+        }
+    ],
+    "width": 30
+}
