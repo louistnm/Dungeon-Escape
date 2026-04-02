@@ -21,6 +21,12 @@ void World::add_platform(float x, float y, float width, float height) {
 }
 
 bool World::collides(const Vec<float>& position) const {
+    if (position.x < 0 || position.x >= tilemap.width) {
+        return true;
+    }
+    if (position.y < 0 || position.y >= tilemap.height) {
+        return true;
+    }
     int x = std::floor(position.x);
     int y = std::floor(position.y);
     return tilemap(x,y).blocking;
