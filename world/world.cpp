@@ -3,13 +3,12 @@
 #include <algorithm>
 #include "fsm.h"
 #include "physics.h"
-#include "states.h"
-#include "keyboard_input.h"
-#include "level.h"
+#include  "level.h"
 #include "audio.h"
+#include "events.h"
 
-World::World(const Level& level, Audio& audio)
-    : tilemap{level.width,level.height}, audio{&audio} {
+World::World(const Level& level, Audio& audio, GameObject* player, std::map<std::string, Event*> events)
+    : tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events} {
     load_level(level);
 }
 
@@ -22,107 +21,79 @@ void World::add_platform(float x, float y, float width, float height) {
 }
 
 bool World::collides(const Vec<float>& position) const {
-    if (position.x < 0 || position.x >= tilemap.width) {
-        return true;
-    }
-    if (position.y < 0 || position.y >= tilemap.height) {
-        return true;
-    }
     int x = std::floor(position.x);
     int y = std::floor(position.y);
     return tilemap(x,y).blocking;
 }
 
-GameObject* World::create_player(const Level& level) {
-    // Create FSM
-    Transitions transitions = {
-        {{StateType::Standing, Transition::Jump}, StateType::InAir}, //if standing and jump, go to inair
-        {{StateType::InAir, Transition::Stop}, StateType::Standing},
-        {{StateType::Standing, Transition::Move}, StateType::Running},
-        {{StateType::Running, Transition::Stop}, StateType::Standing},
-        {{StateType::Running, Transition::Jump}, StateType::InAir},
-        {{StateType::Standing, Transition::Sprint}, StateType::Sprinting},
-        {{StateType::Running, Transition::Sprint}, StateType::Sprinting},
-        {{StateType::Sprinting, Transition::Stop}, StateType::Standing},
-        {{StateType::Sprinting, Transition::Move}, StateType::Running},
-        {{StateType::Sprinting, Transition::Jump}, StateType::InAir}
-
-    };
-    States states = {
-        {StateType::Standing, new Standing()},
-        {StateType::InAir, new InAir()},
-        {StateType::Running, new Running()},
-        {StateType::Sprinting, new Sprinting()}
-    };
-    FSM* fsm = new FSM{transitions, states, StateType::Standing};
-
-    //player input
-    Keyboard_Input* input = new Keyboard_Input();
-
-    player = new GameObject(Vec<float>{static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)}, Vec<float>{1,2}, *this, fsm, input, Color{255,0,0,255});
-    return player;
-}
-
 void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity) {
-    // test for collisions on the bottom or top first
-    if (collides(position) && collides({position.x+size.x, position.y})) {
-        position.y = ceil(position.y);
-        velocity.y = 0;
-    } else if (collides({position.x, position.y+size.y}) && collides({position.x+size.x, position.y+size.y})){
-        position.y = floor(position.y);
+    // test sides first. if both collide move backward
+    // bottom side
+    if (collides(position) && collides({position.x + size.x, position.y})) {
+        position.y = std::ceil(position.y);
         velocity.y = 0;
     }
-    // then test for collisions on the left and right sides
-    if (collides(position) && collides({position.x, position.y+size.y})) {
-        position.x = ceil(position.x);
-        velocity.x = 0;
-    } else if (collides({position.x+size.x, position.y}) && collides({position.x+size.x, position.y+size.y})){
-        position.x = floor(position.x);
+    // top side
+    else if (collides({position.x, position.y + size.y}) && collides({position.x + size.x, position.y + size.y})) {
+        position.y = std::floor(position.y);
+        velocity.y = 0;
+    }
+    // left side
+    if (collides(position) && collides({position.x, position.y + size.y})) {
+        position.x = std::ceil(position.x);
         velocity.x = 0;
     }
-    // now test each corner
-    if (collides(position)) { //bottom left corner
-        float dx = ceil(position.x) - position.x;
-        float dy = ceil(position.y) - position.y;
-
+    // right side
+    else if (collides({position.x + size.x, position.y}) && collides({position.x + size.x, position.y + size.y})) {
+        position.x = std::floor(position.x);
+        velocity.x = 0;
+    }
+    // test corners next, move back in smaller axis
+    if (collides(position)) {
+        float dx = std::ceil(position.x) - position.x;
+        float dy = std::ceil(position.y) - position.y;
         if (dx > dy) {
-            position.y = ceil(position.y);
+            position.y = std::ceil(position.y);
             velocity.y = 0;
-        } else {
-            position.x = ceil(position.x);
+        }
+        else {
+            position.x = std::ceil(position.x);
             velocity.x = 0;
         }
-    } else if (collides({position.x+size.x, position.y})) { //bottom right corner
-        float dx = position.x - floor(position.x);
-        float dy = ceil(position.y) - position.y;
-
+    }
+    else if (collides({position.x, position.y + size.y})) {
+        float dx = std::ceil(position.x) - position.x;
+        float dy = position.y - std::floor(position.y);
         if (dx > dy) {
-            position.y = ceil(position.y);
+            position.y = std::floor(position.y);
             velocity.y = 0;
-        } else {
-            position.x = floor(position.x);
+        }
+        else {
+            position.x = std::ceil(position.x);
             velocity.x = 0;
         }
-    } else if (collides({position.x, position.y+size.y})) { //top left corner
-        float dx = ceil(position.x) - position.x;
-        float dy = position.y - floor(position.y);
-
+    }
+    else if (collides({position.x + size.x, position.y})) {
+        float dx = position.x - std::floor(position.x);
+        float dy = std::ceil(position.y) - position.y;
         if (dx > dy) {
-            position.y = floor(position.y);
+            position.y = std::ceil(position.y);
             velocity.y = 0;
-        } else {
-            position.x = ceil(position.x);
+        }
+        else {
+            position.x = std::floor(position.x);
             velocity.x = 0;
         }
-    } else if (collides({position.x+size.x, position.y+size.y})) { //top right corner
-        float dx =  position.x - floor(position.x);
-        float dy =  position.y - floor(position.y);
-
+    }
+    else if (collides({position.x + size.x, position.y + size.y})) {
+        float dx = position.x - std::floor(position.x);
+        float dy = position.y - std::floor(position.y);
         if (dx > dy) {
-            position.y = floor(position.y);
+            position.y = std::floor(position.y);
             velocity.y = 0;
-        } else {
-            position.x = floor(position.x);
+        }
+        else {
+            position.x = std::floor(position.x);
             velocity.x = 0;
         }
     }
@@ -156,6 +127,8 @@ void World::update(float dt) {
     player->physics.position = future_position;
     player->physics.velocity = future_velocity;
 
+    touch_tiles(*player);
+
 }
 
 void World::load_level(const Level& level) {
@@ -163,6 +136,29 @@ void World::load_level(const Level& level) {
         tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
     }
     audio->load_sounds({});
+
+    //get all enemies
+    for (const auto& [pos, enemy_name] : level.enemy_locations) {
+        GameObject enemy{enemy_name, nullptr, nullptr, {255, 255, 0, 255}};
+        enemy.physics.position = pos;
+        game_objects.push_back(enemy);
+    }
+}
+
+void World::touch_tiles(GameObject& obj) {
+    int x = std::floor(obj.physics.position.x);
+    int y = std::floor(obj.physics.position.y);
+    const std::vector<Vec<int>> displacements{{0,0},{static_cast<int>(obj.size.x),0}, {0,static_cast<int>(obj.size.y)}, {static_cast<int>(obj.size.x),static_cast<int>(obj.size.y)}};
+    for (const auto &displacement : displacements) {
+        Tile& tile = tilemap(x+displacement.x, y +displacement.y);
+        if (!tile.event_name.empty()) {
+            auto itr = events.find(tile.event_name);
+            if (itr == events.end()) {
+                throw std::runtime_error("Cannot find event: " + tile.event_name);
+            }
+            itr->second->perform(*this, obj);
+        }
+    }
 }
 
 

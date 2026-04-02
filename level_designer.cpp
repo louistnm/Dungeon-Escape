@@ -8,14 +8,14 @@
 const int TILESIZE = 64;
 const int VISIBLE_MAP_WIDTH = 14;
 const int VISIBLE_MAP_HEIGHT = 12;
-constexpr int COLUMNS = 11;
+constexpr int COLUMNS = 5;
 constexpr float PADDING = 16.0f;
 
 LevelDesigner::LevelDesigner(const std::string &level_name, int width, int height)
     : graphics{"Level Designer", 1280, 720}, tilemap{width, height}, level{level_name},
     dt{0.1}, performance_frequency{SDL_GetPerformanceFrequency()}, prev_counter{SDL_GetPerformanceCounter()}, lag{0.0},
-    display_rect{0.0f, 0.0f, graphics.width*(1.0f/3.0f), static_cast<float>(graphics.height)},
-    tiles_rect{graphics.width*(1.0f/3.0f), 0.0f, graphics.width*(2.0f/3.0f), static_cast<float>(graphics.height)}{
+    display_rect{0.0f, 0.0f, graphics.width*(2.0f/3.0f), static_cast<float>(graphics.height)},
+    tiles_rect{graphics.width*(2.0f/3.0f), 0.0f, graphics.width*(1.0f/3.0f), static_cast<float>(graphics.height)}{
     update_title();
 
     AssetManager::get_level_details(graphics, level);
@@ -95,6 +95,12 @@ void LevelDesigner::input() {
     if (keys[SDL_SCANCODE_P]) {
         place_player();
     }
+    if (keys[SDL_SCANCODE_1]) {
+
+    }
+    if (keys[SDL_SCANCODE_2]) {
+
+    }
 
     // timer for scrolling
     if (lag < dt) {
@@ -131,14 +137,28 @@ void LevelDesigner::render() {
                 float screen_x = display_rect.x + x * TILESIZE;
                 float screen_y = display_rect.y + (VISIBLE_MAP_HEIGHT - 1 - y) * TILESIZE;
 
+                // draw the sprite
                 graphics.draw_sprite({screen_x, screen_y}, tilemap(tilemap_x, tilemap_y).sprite);
+
+                // highlight tile if selected
                 SDL_FRect rect{screen_x, screen_y, static_cast<float>(TILESIZE), static_cast<float>(TILESIZE)};
                 Color color = selected_tile == Vec<int>{tilemap_x, tilemap_y} ? Color{255, 255, 0, 255} : Color{0, 0, 0, 255};
                 graphics.draw(rect, color, false);
 
+                // put transparent red over a tile if it has an event
+                if (!tilemap(tilemap_x, tilemap_y).event_name.empty()) {
+                    graphics.draw(rect, {255, 0, 0, 100});
+                }
+
                 // render player location as translucent purple
                 if (level.player_spawn_location.x == tilemap_x && level.player_spawn_location.y == tilemap_y) {
                     graphics.draw(rect, {255, 0, 255, 100}, true);
+                }
+
+                // draw transparent yellow if there is an enemy
+                if (level.enemy_locations.contains({static_cast<float>(tilemap_x), static_cast<float>(tilemap_y)})) {
+                    // draw enemy (enemy_name)
+                    graphics.draw(rect, {255, 222, 33, 100});
                 }
             }
         }
@@ -194,4 +214,8 @@ void LevelDesigner::save() {
 
 void LevelDesigner::place_player() {
     level.player_spawn_location = selected_tile;
+}
+
+void LevelDesigner::place_enemy(std::string enemy_name) {
+    level.enemy_locations[{static_cast<float>(selected_tile.x), static_cast<float>(selected_tile.y)}] = enemy_name;
 }

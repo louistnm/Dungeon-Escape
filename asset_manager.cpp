@@ -44,8 +44,15 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
     convert_sprites(sprites_from_json, graphics, obj);
 
     // get the object's physics
+    auto pos = obj.physics.position;
     Physics physics = json.at("physics").get<Physics>();
     obj.physics = physics;
+    obj.physics.position = pos;
+
+    //get the object size
+    obj.size = json.at("size").get<Vec<float>>();
+
+    obj.set_sprite("idle");
 }
 
 void convert_to_tiles(Graphics& graphics, Level &level, std::vector<Tile>& tiles, const std::string& filename) {

@@ -12,6 +12,7 @@ add_library(world
         keyboard_input.h keyboard_input.cpp
         audio.cpp audio.h
         level.cpp level.h
+        events.h events.cpp
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

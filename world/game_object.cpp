@@ -7,8 +7,8 @@
 #include "fsm.h"
 #include "input.h"
 
-GameObject::GameObject(const Vec<float>& position, const Vec<float>& size, World& world, FSM* fsm, Input* input, Color color)
-    : position{position}, size{size}, fsm{fsm}, input{input}, color{color} {}
+GameObject::GameObject(std::string name, FSM* fsm, Input* input, Color color)
+    : obj_name{name}, fsm{fsm}, input{input}, color{color} {}
 
 GameObject::~GameObject() {
     delete fsm;
@@ -18,7 +18,7 @@ GameObject::~GameObject() {
 void GameObject::update(World& world, double dt) {
     fsm->current_state->update(world, *this, dt);
     sprites[sprite_name].update(dt);
-    sprites[sprite_name].flip(physics.velocity.x < 0);
+    sprites[sprite_name].flip(physics.acceleration.x < 0);
     set_sprite(sprite_name);
 }
 

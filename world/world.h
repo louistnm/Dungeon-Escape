@@ -9,22 +9,25 @@
 
 class Level;
 class Audio;
+class Event;
 
 class World {
 public:
-    World(const Level& level, Audio& audio);
+    World(const Level& level, Audio& audio, GameObject* player, std::map<std::string, Event*> events);
 
     void add_platform(float x, float y, float width, float height);
-    bool collides(const Vec<float>& position) const;
-    GameObject* create_player(const Level& level);
     void move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity);
     void update(float dt);
     void load_level(const Level& level);
+    void touch_tiles(GameObject& obj);
+
+    bool end_level{false};
+    bool collides(const Vec<float>& position) const;
 
     Tilemap tilemap;
-
-private:
     GameObject* player;
     Audio* audio;
+    std::vector<GameObject> game_objects;
 
+    std::map<std::string, Event*> events;
 };

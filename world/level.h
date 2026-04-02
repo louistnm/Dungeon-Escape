@@ -11,6 +11,7 @@
 #include <map>
 
 using TileLocations = std::map<Vec<int>, std::string>;
+using EnemyLocations = std::map<Vec<float>, std::string>;
 
 class Level {
 public:
@@ -25,4 +26,5 @@ public:
     std::map<std::string, Tile> tile_types;
 
     Vec<int> player_spawn_location{-1, -1};
+    EnemyLocations enemy_locations;
 };
