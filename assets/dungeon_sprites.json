@@ -1130,6 +1130,84 @@
       },
       "blocking": false,
       "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "door_top_closed",
+        "filename": "dungeon_tile_set.png",
+        "location": [208,160],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": false,
+      "event_name": "next_level"
+    },
+    {
+      "sprite": {
+        "name": "door_bottom_closed",
+        "filename": "dungeon_tile_set.png",
+        "location": [208,176],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": false,
+      "event_name": "next_level"
+    },
+    {
+      "sprite": {
+        "name": "stair_open_left_flip",
+        "filename": "dungeon_tile_set.png",
+        "location": [16,240],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": true,
+      "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "stair_open_right_flip",
+        "filename": "dungeon_tile_set.png",
+        "location": [32,240],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": true,
+      "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "triangle_open_left_flip",
+        "filename": "dungeon_tile_set.png",
+        "location": [48,240],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": true,
+      "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "triangle_open_right_flip",
+        "filename": "dungeon_tile_set.png",
+        "location": [64,240],
+        "size": [16, 16],
+        "scale": 4,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+      "blocking": true,
+      "event_name": ""
     }
   ]
 }

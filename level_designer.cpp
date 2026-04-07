@@ -8,14 +8,16 @@
 const int TILESIZE = 64;
 const int VISIBLE_MAP_WIDTH = 14;
 const int VISIBLE_MAP_HEIGHT = 12;
-constexpr int COLUMNS = 5;
+constexpr int COLUMNS = 12;
 constexpr float PADDING = 16.0f;
+constexpr float EDITOR_WIDTH_RATIO = 1.0f/4.0f;
+constexpr float TILE_WIDTH_RATIO = 3.0f/4.0f;
 
 LevelDesigner::LevelDesigner(const std::string &level_name, int width, int height)
     : graphics{"Level Designer", 1280, 720}, tilemap{width, height}, level{level_name},
     dt{0.1}, performance_frequency{SDL_GetPerformanceFrequency()}, prev_counter{SDL_GetPerformanceCounter()}, lag{0.0},
-    display_rect{0.0f, 0.0f, graphics.width*(2.0f/3.0f), static_cast<float>(graphics.height)},
-    tiles_rect{graphics.width*(2.0f/3.0f), 0.0f, graphics.width*(1.0f/3.0f), static_cast<float>(graphics.height)}{
+    display_rect{0.0f, 0.0f, graphics.width*(EDITOR_WIDTH_RATIO), static_cast<float>(graphics.height)},
+    tiles_rect{graphics.width*(EDITOR_WIDTH_RATIO), 0.0f, graphics.width*(TILE_WIDTH_RATIO), static_cast<float>(graphics.height)}{
     update_title();
 
     AssetManager::get_level_details(graphics, level);
@@ -119,6 +121,9 @@ void LevelDesigner::input() {
     else if (keys[SDL_SCANCODE_DOWN]) {
         y_min--;
     }
+    else if (keys[SDL_SCANCODE_BACKSLASH]) {
+        fill_all_tiles();
+    }
 }
 
 void LevelDesigner::render() {
@@ -142,13 +147,13 @@ void LevelDesigner::render() {
 
                 // highlight tile if selected
                 SDL_FRect rect{screen_x, screen_y, static_cast<float>(TILESIZE), static_cast<float>(TILESIZE)};
-                Color color = selected_tile == Vec<int>{tilemap_x, tilemap_y} ? Color{255, 255, 0, 255} : Color{0, 0, 0, 255};
-                graphics.draw(rect, color, false);
 
                 // put transparent red over a tile if it has an event
                 if (!tilemap(tilemap_x, tilemap_y).event_name.empty()) {
                     graphics.draw(rect, {255, 0, 0, 100});
                 }
+                Color color = selected_tile == Vec<int>{tilemap_x, tilemap_y} ? Color{255, 255, 0, 255} : Color{0, 0, 0, 255};
+                graphics.draw(rect, color, false);
 
                 // render player location as translucent purple
                 if (level.player_spawn_location.x == tilemap_x && level.player_spawn_location.y == tilemap_y) {
@@ -218,4 +223,8 @@ void LevelDesigner::place_player() {
 
 void LevelDesigner::place_enemy(std::string enemy_name) {
     level.enemy_locations[{static_cast<float>(selected_tile.x), static_cast<float>(selected_tile.y)}] = enemy_name;
+}
+
+void LevelDesigner::fill_all_tiles() {
+
 }
