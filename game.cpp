@@ -115,14 +115,19 @@ void Game::create_player() {
         {{StateType::Standing, Transition::Jump}, StateType::InAir}, //if standing and jump, go to inair
         {{StateType::InAir, Transition::Stop}, StateType::Standing},
         {{StateType::Standing, Transition::Move}, StateType::Running},
+        {{StateType::Standing, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
-        {{StateType::Running, Transition::Jump}, StateType::InAir}
-
+        {{StateType::Running, Transition::Sprint}, StateType::Sprinting},
+        {{StateType::Running, Transition::Jump}, StateType::InAir},
+        {{StateType::Sprinting, Transition::Stop}, StateType::Standing},
+        {{StateType::Sprinting, Transition::Move}, StateType::Running},
+        {{StateType::Sprinting, Transition::Jump}, StateType::InAir}
     };
     States states = {
         {StateType::Standing, new Standing()},
         {StateType::InAir, new InAir()},
-        {StateType::Running, new Running()}
+        {StateType::Running, new Running()},
+        {StateType::Sprinting, new Sprinting()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
