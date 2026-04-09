@@ -181,7 +181,7 @@ void Rolling::update(World& world, GameObject& obj, double dt) {
         obj.fsm->transition(Transition::Fall, world, obj);
     } else if (elapsed <= 0 && on_platform(world, obj)) {
         obj.fsm->transition(Transition::Stop, world, obj);
-    } //TODO
+    }
 }
 
 ////////
