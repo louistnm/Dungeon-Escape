@@ -8,7 +8,8 @@
 
 void Keyboard_Input::get_input() {
     if (next_action_type == ActionType::Jump) return;
-
+    if (next_action_type == ActionType::RollLeft) return;
+    if (next_action_type == ActionType::RollRight) return;
     const bool *key_states = SDL_GetKeyboardState(NULL);
     if (key_states[SDL_SCANCODE_A]) {
         next_action_type = ActionType::MoveLeft;
@@ -41,6 +42,10 @@ void Keyboard_Input::collect_discrete_event(SDL_Event* event) {
     if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0) {
         if (event->key.scancode == SDL_SCANCODE_SPACE) {
             next_action_type = ActionType::Jump;
+        } else if (event->key.scancode == SDL_SCANCODE_Q) {
+            next_action_type = ActionType::RollLeft;
+        } else if (event->key.scancode == SDL_SCANCODE_E) {
+            next_action_type = ActionType::RollRight;
         }
     }
 }

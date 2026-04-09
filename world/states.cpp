@@ -42,8 +42,20 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
     } else if (action_type == ActionType::SprintLeft) {
         obj.fsm->transition(Transition::Sprint, world, obj);
         return new SprintLeft();
+    } else if (action_type == ActionType::RollRight) {
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollRight();
+    } else if (action_type == ActionType::RollLeft) {
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollLeft();
     }
     return nullptr;
+}
+
+void Standing::update(World& world, GameObject& obj, double) {
+    if (!on_platform(world, obj)) {
+        obj.fsm->transition(Transition::Fall, world, obj);
+    }
 }
 
 //////////
@@ -86,8 +98,27 @@ Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
     } else if (action_type == ActionType::Jump) {
         obj.fsm->transition(Transition::Jump, world, obj);
         return new Jump(); //starts physics of jumping
+    } else if (action_type == ActionType::RollRight && obj.physics.velocity.x >= 0) {
+        obj.physics.velocity.x *= 0.75;
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollRight();
+    } else if (action_type == ActionType::RollLeft && obj.physics.velocity.x <= 0) {
+        obj.physics.velocity.x *= 0.75;
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollLeft();
     }
     return nullptr;
+}
+
+void Running::update(World& world, GameObject& obj, double) {
+    if (!on_platform(world, obj)) {
+        if (obj.physics.acceleration.x > 0) {
+            obj.physics.acceleration.x = 0.5*obj.physics.walk_acceleration;
+        } else if (obj.physics.acceleration.x > 0) {
+            obj.physics.acceleration.x = -0.5*obj.physics.walk_acceleration;
+        }
+        obj.fsm->transition(Transition::Fall, world, obj);
+    }
 }
 
 ////////
@@ -111,8 +142,64 @@ Action* Sprinting::input(World& world, GameObject& obj, ActionType action_type) 
     } else if (action_type == ActionType::Jump) {
         obj.fsm->transition(Transition::Jump, world, obj);
         return new Jump();
+    } else if (action_type == ActionType::RollRight && obj.physics.velocity.x >= 0) {
+        obj.physics.velocity.x *= 0.5;
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollRight();
+    } else if (action_type == ActionType::RollLeft  && obj.physics.velocity.x <= 0) {
+        obj.physics.velocity.x *= 0.5;
+        obj.fsm->transition(Transition::Roll, world, obj);
+        return new RollLeft();
     }
     return nullptr;
+}
+
+void Sprinting::update(World& world, GameObject& obj, double) {
+    if (!on_platform(world, obj)) {
+        if (obj.physics.acceleration.x > 0) {
+            obj.physics.acceleration.x = 0.75*obj.physics.walk_acceleration;
+        } else if (obj.physics.acceleration.x > 0) {
+            obj.physics.acceleration.x = -0.75*obj.physics.walk_acceleration;
+        }
+        obj.fsm->transition(Transition::Fall, world, obj);
+    }
+}
+
+////////
+///Rolling
+////////
+
+void Rolling::on_enter(World&, GameObject& obj) {
+    elapsed = cooldown;
+    obj.color = {0, 0, 0, 255};
+    obj.set_sprite("rolling");
+}
+
+void Rolling::update(World& world, GameObject& obj, double dt) {
+    elapsed -= dt;
+    if (elapsed <= 0 && !on_platform(world, obj)) {
+        obj.fsm->transition(Transition::Fall, world, obj);
+    } else if (elapsed <= 0 && on_platform(world, obj)) {
+        obj.fsm->transition(Transition::Stop, world, obj);
+    } //TODO
+}
+
+////////
+///Falling
+////////
+
+void Falling::on_enter(World&, GameObject& obj) {
+    obj.physics.velocity.x *= 1/10;
+    elapsed = cooldown;
+    obj.color = {255, 255, 255, 255};
+    obj.set_sprite("falling");
+}
+
+void Falling::update(World& world, GameObject& obj, double dt) {
+    elapsed -= dt;
+    if (elapsed <= 0 && on_platform(world, obj)) {
+        obj.fsm->transition(Transition::Stop, world, obj);
+    }
 }
 
 ////////

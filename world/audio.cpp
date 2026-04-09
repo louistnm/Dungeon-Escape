@@ -37,7 +37,7 @@ Audio::~Audio() {
 }
 
 void Audio::load_sounds(const std::unordered_map<std::string, std::string> sounds_files) {
-    auto path = std::filesystem::current_path() / "assets" / "Haunted House Theme.mp3";
+    auto path = std::filesystem::current_path() / "assets" / "haunted_house_theme.mp3";
     std::ifstream input(path);
     if (!input) {
         throw std::runtime_error("Could not open: " + path.string());

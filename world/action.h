@@ -5,7 +5,7 @@
 #pragma once
 
 enum class ActionType {
-    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight
+    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight, RollLeft, RollRight
 };
 
 class World;
@@ -34,5 +34,13 @@ class SprintRight : public Action {
 };
 
 class SprintLeft : public Action {
+    void perform(World&, GameObject& obj) override;
+};
+
+class RollRight : public Action {
+    void perform(World&, GameObject& obj) override;
+};
+
+class RollLeft : public Action {
     void perform(World&, GameObject& obj) override;
 };

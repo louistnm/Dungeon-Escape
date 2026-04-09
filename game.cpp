@@ -116,18 +116,29 @@ void Game::create_player() {
         {{StateType::InAir, Transition::Stop}, StateType::Standing},
         {{StateType::Standing, Transition::Move}, StateType::Running},
         {{StateType::Standing, Transition::Sprint}, StateType::Sprinting},
+        {{StateType::Standing, Transition::Fall}, StateType::Falling},
+        {{StateType::Standing, Transition::Roll}, StateType::Rolling},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
         {{StateType::Running, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Running, Transition::Jump}, StateType::InAir},
+        {{StateType::Running, Transition::Roll}, StateType::Rolling},
+        {{StateType::Running, Transition::Fall}, StateType::Falling},
         {{StateType::Sprinting, Transition::Stop}, StateType::Standing},
         {{StateType::Sprinting, Transition::Move}, StateType::Running},
-        {{StateType::Sprinting, Transition::Jump}, StateType::InAir}
+        {{StateType::Sprinting, Transition::Roll}, StateType::Rolling},
+        {{StateType::Sprinting, Transition::Jump}, StateType::InAir},
+        {{StateType::Sprinting, Transition::Fall}, StateType::Falling},
+        {{StateType::Rolling, Transition::Stop}, StateType::Standing},
+        {{StateType::Rolling, Transition::Fall}, StateType::Falling},
+        {{StateType::Falling, Transition::Stop}, StateType::Standing}
     };
     States states = {
         {StateType::Standing, new Standing()},
         {StateType::InAir, new InAir()},
         {StateType::Running, new Running()},
-        {StateType::Sprinting, new Sprinting()}
+        {StateType::Sprinting, new Sprinting()},
+        {StateType::Rolling, new Rolling()},
+        {StateType::Falling, new Falling()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 

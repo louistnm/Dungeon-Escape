@@ -35,6 +35,24 @@
       "scale" : 3,
       "number_of_frames" : 3,
       "dt_per_frame" : 0.2
+    },
+    {
+      "name" : "falling",
+      "filename" : "_fall.png",
+      "location" : [0,0],
+      "size" : [120,80],
+      "scale" : 3,
+      "number_of_frames" : 3,
+      "dt_per_frame" : 0.2
+    },
+    {
+      "name" : "rolling",
+      "filename" : "_roll.png",
+      "location" : [0,0],
+      "size" : [120,80],
+      "scale" : 3,
+      "number_of_frames" : 12,
+      "dt_per_frame" : 0.038
     }
   ],
   "physics" : {
