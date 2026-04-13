@@ -14,7 +14,7 @@ class Event;
 class World {
 public:
     World(const Level& level, Audio& audio, GameObject* player, std::map<std::string, Event*> events);
-
+    ~World();
     void add_platform(float x, float y, float width, float height);
     void move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity);
     void update(float dt);
@@ -27,7 +27,6 @@ public:
     Tilemap tilemap;
     GameObject* player;
     Audio* audio;
-    std::vector<GameObject> game_objects;
-
+    std::vector<GameObject*> game_objects;
     std::map<std::string, Event*> events;
 };

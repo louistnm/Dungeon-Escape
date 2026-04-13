@@ -12,6 +12,13 @@ World::World(const Level& level, Audio& audio, GameObject* player, std::map<std:
     load_level(level);
 }
 
+World::~World() {
+    for (auto obj : game_objects) {
+        if (obj == player) continue;
+        delete obj;
+    }
+}
+
 void World::add_platform(float x, float y, float width, float height) {
     for (int i{0}; i < height; ++i) {
         for (int j{0}; j < width; ++j) {
@@ -106,35 +113,34 @@ void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& ve
 }
 
 void World::update(float dt) {
-    // //currently only player
+    for (auto& obj : game_objects) {
+        // ... the code to update velocity and position
+        obj->update(*this, dt);
+        auto position = obj->physics.position;
+        auto velocity = obj->physics.velocity;
+        auto acceleration = obj->physics.acceleration;
 
-    // ... the code to update velocity and position
-    auto position = player->physics.position;
-    auto velocity = player->physics.velocity;
-    auto acceleration = player->physics.acceleration;
+        velocity += 0.5f * acceleration * dt;
+        position += velocity*dt;
+        velocity += 0.5f * acceleration * dt; //calculate half the velocity before position calculation and half after
+        velocity.x *= obj->physics.damping;
 
-    velocity += 0.5f * acceleration * dt;
-    position += velocity*dt;
-    velocity += 0.5f * acceleration * dt; //calculate half the velocity before position calculation and half after
-    velocity.x *= player->physics.damping;
+        velocity.x = std::clamp(velocity.x, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
+        velocity.y = std::clamp(velocity.y, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
 
-    velocity.x = std::clamp(velocity.x, -player->physics.terminal_velocity, player->physics.terminal_velocity);
-    velocity.y = std::clamp(velocity.y, -player->physics.terminal_velocity, player->physics.terminal_velocity);
-
-    // check for collisions in the world - x direction
-    Vec<float> future_position{position.x, player->physics.position.y};
-    Vec<float> future_velocity{velocity.x, 0};
-    move_to(future_position, player->size, future_velocity);
-    // now y direction after (maybe) moving in x
-    future_velocity.y = velocity.y;
-    future_position.y = position.y;
-    move_to(future_position, player->size, future_velocity);
-    // update the player position and velocity
-    player->physics.position = future_position;
-    player->physics.velocity = future_velocity;
-
-    touch_tiles(*player);
-
+        // check for collisions in the world - x direction
+        Vec<float> future_position{position.x, obj->physics.position.y};
+        Vec<float> future_velocity{velocity.x, 0};
+        move_to(future_position, obj->size, future_velocity);
+        // now y direction after (maybe) moving in x
+        future_velocity.y = velocity.y;
+        future_position.y = position.y;
+        move_to(future_position, obj->size, future_velocity);
+        // update the player position and velocity
+        obj->physics.position = future_position;
+        obj->physics.velocity = future_velocity;
+        touch_tiles(*obj);
+    }
 }
 
 void World::load_level(const Level& level) {
@@ -145,10 +151,12 @@ void World::load_level(const Level& level) {
 
     //get all enemies
     for (const auto& [pos, enemy_name] : level.enemy_locations) {
-        GameObject enemy{enemy_name, nullptr, nullptr, {255, 255, 0, 255}};
-        enemy.physics.position = pos;
+        auto enemy = new GameObject{enemy_name, nullptr, nullptr, {255, 255, 0, 255}};
+        enemy->physics.position = pos;
         game_objects.push_back(enemy);
     }
+
+    game_objects.push_back(player);
 }
 
 void World::touch_tiles(GameObject& obj) {

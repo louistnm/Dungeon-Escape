@@ -70,7 +70,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, name, filename, location, size, scale
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Physics, velocity, acceleration, gravity, damping, walk_acceleration, jump_velocity, terminal_velocity);
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, sprite, blocking, event_name);
 namespace AssetManager {
-    void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj);
+    void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj, bool random_start = false);
     void get_level_details(Graphics& graphics, Level& level);
     void update_level_details(const Level& level);
 }

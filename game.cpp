@@ -53,7 +53,6 @@ void Game::update() {
     prev_counter = now;
     while (lag >= dt) {
         player->input->handle_input(*world, *player);
-        player->update(*world, dt); //player update before world
         world->update(dt);
         //put the camera slightly ahead of the player
         float L = length(player->physics.velocity);
@@ -79,7 +78,7 @@ void Game::render() {
 
     //enemies
     for (auto& obj : world->game_objects) {
-        camera.render(obj);
+        camera.render(*obj);
     }
     //update()
     graphics.update();
@@ -100,7 +99,8 @@ void Game::load_level() {
 
     //assets for objects
     for (auto& obj : world->game_objects) {
-        AssetManager::get_game_object_details(obj.obj_name + "-enemy", graphics, obj);
+        if (obj == world->player) continue;
+        AssetManager::get_game_object_details(obj->obj_name + "-enemy", graphics, *obj, true);
     }
 
     player->physics.position = {static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)};

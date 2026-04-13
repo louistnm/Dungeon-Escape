@@ -16,7 +16,9 @@ GameObject::~GameObject() {
 }
 
 void GameObject::update(World& world, double dt) {
-    fsm->current_state->update(world, *this, dt);
+    if (fsm != nullptr) {
+        fsm->current_state->update(world, *this, dt);
+    }
     sprites[sprite_name].update(dt);
     sprites[sprite_name].flip(physics.acceleration.x < 0);
     set_sprite(sprite_name);
