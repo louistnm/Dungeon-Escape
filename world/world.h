@@ -6,6 +6,7 @@
 #include "tilemap.h"
 #include "vec.h"
 #include "game_object.h"
+#include "quadtree.h"
 
 class Level;
 class Audio;
@@ -20,6 +21,7 @@ public:
     void update(float dt);
     void load_level(const Level& level);
     void touch_tiles(GameObject& obj);
+    void build_quadtree();
 
     bool end_level{false};
     bool collides(const Vec<float>& position) const;
@@ -29,4 +31,6 @@ public:
     Audio* audio;
     std::vector<GameObject*> game_objects;
     std::map<std::string, Event*> events;
+
+    Quadtree quadtree;
 };

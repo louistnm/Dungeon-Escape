@@ -6,6 +6,7 @@
 #include "physics.h"
 #include "fsm.h"
 #include "input.h"
+#include "quadtree.h"
 
 GameObject::GameObject(std::string name, FSM* fsm, Input* input, Color color)
     : obj_name{name}, fsm{fsm}, input{input}, color{color} {}
@@ -42,4 +43,10 @@ void GameObject::set_sprite(const std::string& next_sprite) {
     }
 
     sprite = sprites[sprite_name].get_sprite();
+}
+
+AABB GameObject::get_bounding_box() {
+    Vec<float> half_size = {size.x / 2.0f, size.y / 2.0f};
+    Vec<float> center = {physics.position.x + half_size.x, physics.position.y + half_size.y};
+    return {center, half_size};
 }

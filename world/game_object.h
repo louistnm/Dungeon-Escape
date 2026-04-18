@@ -9,6 +9,7 @@
 class FSM; //don't need all of FSM, so forward-declaring saves time
 class Input;
 class World;
+class AABB;
 
 using Sprites = std::map<std::string, AnimatedSprite>;
 
@@ -24,6 +25,8 @@ public:
     std::pair<Vec<float>, Color> get_sprite() const;
     void set_sprite(const std::string& next_sprite);
 
+    AABB get_bounding_box();
+
 
     // Player data
     std::string obj_name;
@@ -35,4 +38,9 @@ public:
     Sprites sprites;
     Sprite sprite;
     std::string sprite_name;
+
+    //combat
+    int health;
+    int max_health;
+    int damage;
 };

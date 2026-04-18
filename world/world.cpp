@@ -1,6 +1,8 @@
 #include "world.h"
 #include "game_object.h"
 #include <algorithm>
+#include <iostream>
+
 #include "fsm.h"
 #include "physics.h"
 #include  "level.h"
@@ -8,7 +10,8 @@
 #include "events.h"
 
 World::World(const Level& level, Audio& audio, GameObject* player, std::map<std::string, Event*> events)
-    : tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events} {
+    : tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events},
+    quadtree{AABB{{level.width/ 2.0f, level.height/ 2.0f},{level.width/ 2.0f, level.height/ 2.0f}}}{
     load_level(level);
 }
 
@@ -40,29 +43,35 @@ bool World::collides(const Vec<float>& position) const {
 }
 
 void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity) {
+    float epsilon  = 0.001f;
+    auto left = position.x;
+    auto right = position.x + size.x- epsilon;
+    auto bottom = position.y;
+    auto top = position.y + size.y - epsilon;
+
     // test sides first. if both collide move backward
     // bottom side
-    if (collides(position) && collides({position.x + size.x, position.y})) {
+    if (collides({left,bottom}) && collides({right,bottom})) {
         position.y = std::ceil(position.y);
         velocity.y = 0;
     }
     // top side
-    else if (collides({position.x, position.y + size.y}) && collides({position.x + size.x, position.y + size.y})) {
+    else if (collides({left,top}) && collides({right,top})) {
         position.y = std::floor(position.y);
         velocity.y = 0;
     }
     // left side
-    if (collides(position) && collides({position.x, position.y + size.y})) {
+    if (collides({left,bottom}) && collides({left,top})) {
         position.x = std::ceil(position.x);
         velocity.x = 0;
     }
     // right side
-    else if (collides({position.x + size.x, position.y}) && collides({position.x + size.x, position.y + size.y})) {
+    else if (collides({right,bottom}) && collides({right,top})) {
         position.x = std::floor(position.x);
         velocity.x = 0;
     }
     // test corners next, move back in smaller axis
-    if (collides(position)) {
+    if (collides({left,bottom})) {
         float dx = std::ceil(position.x) - position.x;
         float dy = std::ceil(position.y) - position.y;
         if (dx > dy) {
@@ -74,7 +83,7 @@ void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& ve
             velocity.x = 0;
         }
     }
-    else if (collides({position.x, position.y + size.y})) {
+    else if (collides({left,top})) {
         float dx = std::ceil(position.x) - position.x;
         float dy = position.y - std::floor(position.y);
         if (dx > dy) {
@@ -86,7 +95,7 @@ void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& ve
             velocity.x = 0;
         }
     }
-    else if (collides({position.x + size.x, position.y})) {
+    else if (collides({right,bottom})) {
         float dx = position.x - std::floor(position.x);
         float dy = std::ceil(position.y) - position.y;
         if (dx > dy) {
@@ -98,7 +107,7 @@ void World::move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& ve
             velocity.x = 0;
         }
     }
-    else if (collides({position.x + size.x, position.y + size.y})) {
+    else if (collides({right,top})) {
         float dx = position.x - std::floor(position.x);
         float dy = position.y - std::floor(position.y);
         if (dx > dy) {
@@ -141,6 +150,13 @@ void World::update(float dt) {
         obj->physics.velocity = future_velocity;
         touch_tiles(*obj);
     }
+
+    //check for collision with the player
+    build_quadtree(); //builds tree every sixtieth of a second
+    std::vector<GameObject*> collides_with = quadtree.query_range(player->get_bounding_box());
+    if (collides_with.size() > 1) {
+        std::cout << "collided!\n";
+    }
 }
 
 void World::load_level(const Level& level) {
@@ -160,11 +176,19 @@ void World::load_level(const Level& level) {
 }
 
 void World::touch_tiles(GameObject& obj) {
-    int x = std::floor(obj.physics.position.x);
-    int y = std::floor(obj.physics.position.y);
-    const std::vector<Vec<int>> displacements{{0,0},{static_cast<int>(obj.size.x),0}, {0,static_cast<int>(obj.size.y)}, {static_cast<int>(obj.size.x),static_cast<int>(obj.size.y)}};
-    for (const auto &displacement : displacements) {
-        Tile& tile = tilemap(x+displacement.x, y +displacement.y);
+    float epsilon = 0.001f;
+
+    const std::vector<Vec<float>> tiles {
+                {obj.physics.position.x - epsilon, obj.physics.position.y},
+                {obj.physics.position.x, obj.physics.position.y + obj.size.y + epsilon},
+                {obj.physics.position.x + obj.size.x + epsilon, obj.physics.position.y},
+                {obj.physics.position.x, obj.physics.position.y - epsilon}
+    };
+
+    for (const auto& p : tiles) {
+        int x = static_cast<int>(std::floor(p.x));
+        int y = static_cast<int>(std::floor(p.y));
+        Tile& tile = tilemap(x, y);
         if (!tile.event_name.empty()) {
             auto itr = events.find(tile.event_name);
             if (itr == events.end()) {
@@ -172,6 +196,14 @@ void World::touch_tiles(GameObject& obj) {
             }
             itr->second->perform(*this, obj);
         }
+    }
+}
+
+void World::build_quadtree() {
+    quadtree.clear();
+
+    for (auto obj : game_objects) {
+        quadtree.insert(obj);
     }
 }
 

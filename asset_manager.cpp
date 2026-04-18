@@ -56,6 +56,11 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
     //get the object size
     obj.size = json.at("size").get<Vec<float>>();
 
+    //get combat info
+    obj.health = json.at("health").get<int>();
+    obj.max_health = json.at("max_health").get<int>();
+    obj.damage = json.at("damage").get<int>();
+
     obj.set_sprite("idle");
 }
 

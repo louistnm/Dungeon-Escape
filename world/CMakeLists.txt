@@ -13,6 +13,7 @@ add_library(world
         audio.cpp audio.h
         level.cpp level.h
         events.h events.cpp
+        quadtree.h quadtree.cpp
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

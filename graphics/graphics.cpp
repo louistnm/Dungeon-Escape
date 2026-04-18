@@ -17,7 +17,7 @@ Graphics::Graphics(std::string title, int width, int height)
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
     }
     SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 void Graphics::draw(const SDL_FRect& rect, const Color& color, bool filled) {
