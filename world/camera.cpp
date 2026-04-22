@@ -103,3 +103,8 @@ void Camera::render(const GameObject& obj) const {
     render(obj.physics.position, obj.sprite, obj.flash_sprite());
 }
 
+void Camera::render_game_over() {
+    SDL_FRect full_screen{0.0f, 0.0f, static_cast<float>(graphics.width), static_cast<float>(graphics.height)};
+    graphics.draw(full_screen, Color{0,0,0,180}, true);
+}
+

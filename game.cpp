@@ -76,6 +76,11 @@ void Game::update() {
             if (world->end_level) {
                 load_level();
             }
+
+            //check for game over
+            if (world -> end_game) {
+                mode = GameMode::GameOver;
+            }
             break;
         }
         lag -= dt; //accumulate lag enough so that you update world every 60th of a second
@@ -97,6 +102,11 @@ void Game::render() {
     for (auto& obj : world->game_objects) {
         camera.render(*obj);
     }
+
+    if (mode == GameMode::GameOver) {
+        camera.render_game_over();
+    }
+
     //update()
     graphics.update();
 }
