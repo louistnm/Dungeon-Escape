@@ -84,22 +84,22 @@ void Camera::render(const Tilemap& tilemap) const {
                 render(position, tile.sprite);
             }
             if (grid_toggle.on) {
-                render(position, {0,0,0,0}, false);
+                render(position, Color{0,0,0,0}, false);
             }
         }
     }
 }
 
-void Camera::render(const Vec<float>& position, const Sprite& sprite) const {
+void Camera::render(const Vec<float>& position, const Sprite& sprite, bool flash) const {
     Vec<float> pixel = world_to_screen(position);
     pixel.y += tilesize/2;
-    graphics.draw_sprite(pixel, sprite);
+    graphics.draw_sprite(pixel, sprite, flash);
 }
 
 void Camera::render(const GameObject& obj) const {
     if (grid_toggle.on) {
         render(obj.physics.position, obj.color);
     }
-    render(obj.physics.position, obj.sprite);
+    render(obj.physics.position, obj.sprite, obj.flash_sprite());
 }
 

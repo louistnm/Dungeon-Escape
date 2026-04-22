@@ -21,7 +21,7 @@ public:
 
     void render(const Vec<float>& position, const Color& color, bool filled=true) const;
     void render(const Tilemap& tilemap) const;
-    void render(const Vec<float>& position, const Sprite& sprite) const;
+    void render(const Vec<float>& position, const Sprite& sprite, bool flash=false) const;
     void render(const GameObject& obj) const;
 
 

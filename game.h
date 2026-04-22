@@ -4,6 +4,7 @@
 #include "audio.h"
 #include "graphics.h"
 
+enum class GameMode{Playing, GameOver};
 
 class Game {
 public:
@@ -35,4 +36,7 @@ private:
     void create_player();
     int current_level{0};
     void load_level();
+
+    //game state
+    GameMode mode{GameMode::Playing};
 };

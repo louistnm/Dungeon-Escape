@@ -5,7 +5,7 @@
 #pragma once
 
 enum class ActionType {
-    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight, RollLeft, RollRight
+    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight, RollLeft, RollRight, AttackAll
 };
 
 class World;

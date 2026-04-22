@@ -154,8 +154,21 @@ void World::update(float dt) {
     //check for collision with the player
     build_quadtree(); //builds tree every sixtieth of a second
     std::vector<GameObject*> collides_with = quadtree.query_range(player->get_bounding_box());
-    if (collides_with.size() > 1) {
-        std::cout << "collided!\n";
+    for (auto& obj : collides_with) {
+        if (obj == player) continue;
+        player->take_damage(obj->damage);
+    }
+
+    //check for dead objects and remove them
+    auto itr = std::remove_if(std::begin(game_objects), std::end(game_objects),
+        [](GameObject* obj) {return !obj ->is_alive;}
+        );
+    game_objects.erase(itr, std::end(game_objects));
+
+    //check for player death
+    if (!player->is_alive) {
+        end_game = true;
+        return;
     }
 }
 

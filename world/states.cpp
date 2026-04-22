@@ -48,6 +48,8 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
     } else if (action_type == ActionType::RollLeft) {
         obj.fsm->transition(Transition::Roll, world, obj);
         return new RollLeft();
+    } else if (action_type == ActionType::AttackAll) {
+        obj.fsm->transition(Transition::AttackAll, world, obj);
     }
     return nullptr;
 }
@@ -198,6 +200,26 @@ void Falling::on_enter(World&, GameObject& obj) {
 void Falling::update(World& world, GameObject& obj, double dt) {
     elapsed -= dt;
     if (elapsed <= 0 && on_platform(world, obj)) {
+        obj.fsm->transition(Transition::Stop, world, obj);
+    }
+}
+
+///////
+///AttackAll
+///////
+
+void AttackAllEnemies::on_enter(World& world, GameObject& obj) {
+    obj.color = {255,100,0,255};
+    for (auto& enemy : world.game_objects) {
+        if (enemy == world.player) continue;
+        enemy->take_damage(obj.damage);
+    }
+    elapsed = 0;
+}
+
+void AttackAllEnemies::update(World& world, GameObject& obj, double dt) {
+    elapsed += dt;
+    if (elapsed >= cooldown) {
         obj.fsm->transition(Transition::Stop, world, obj);
     }
 }

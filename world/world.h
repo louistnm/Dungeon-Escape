@@ -24,6 +24,7 @@ public:
     void build_quadtree();
 
     bool end_level{false};
+    bool end_game{false};
     bool collides(const Vec<float>& position) const;
 
     Tilemap tilemap;

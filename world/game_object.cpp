@@ -50,3 +50,21 @@ AABB GameObject::get_bounding_box() {
     Vec<float> center = {physics.position.x + half_size.x, physics.position.y + half_size.y};
     return {center, half_size};
 }
+
+void GameObject::take_damage(int attack_damage) {
+    if (iframe_time > 0.0) return;
+    health -= attack_damage;
+    iframe_time = 0.5;
+    if (health <= 0){
+        is_alive = false;
+    }
+}
+
+bool GameObject::flash_sprite() const {
+    if (iframe_time <= 0.0) {
+        return false;
+    }
+
+    // alternate overlay on/off every 80 ms
+    return ((SDL_GetTicks() / 80) % 2) == 0;
+}

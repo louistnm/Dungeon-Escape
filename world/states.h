@@ -47,3 +47,12 @@ public:
     const double cooldown = 0.4;
     double elapsed = 0;
 };
+
+class AttackAllEnemies : public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    void update(World&, GameObject&, double dt) override;
+
+    double elapsed = 0;
+    double cooldown = 2;
+};

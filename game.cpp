@@ -39,12 +39,22 @@ Game::~Game() {
 }
 
 void Game::handle_event(SDL_Event* event) {
+    switch (mode)
+    {
+    case GameMode::Playing:
+        player->input->collect_discrete_event(event);
+        break;
+    }
     player->input->collect_discrete_event(event);
 }
 
 void Game::input() {
-    player->input->get_input();
-    camera.handle_input();
+    switch (mode)
+    {
+    case GameMode::Playing:
+        player->input->get_input();
+        camera.handle_input();
+    }
 }
 
 void Game::update() {
@@ -52,16 +62,23 @@ void Game::update() {
     lag += (now - prev_counter) / (float)performance_frequency; //casting C style cause SDL is C
     prev_counter = now;
     while (lag >= dt) {
-        player->input->handle_input(*world, *player);
-        world->update(dt);
-        //put the camera slightly ahead of the player
-        float L = length(player->physics.velocity);
-        Vec displacement = 8.0f * player->physics.velocity / (1.0f + L);
-        camera.update(player->physics.position + displacement, dt);
-        lag -= dt; //accumulate lag enough so that you update world every 60th of a second
-        if (world->end_level) {
-            load_level();
+        switch (mode)
+        {
+        case GameMode::Playing:
+            player->input->handle_input(*world, *player);
+            world->update(dt);
+            //put the camera slightly ahead of the player
+            float L = length(player->physics.velocity);
+            Vec displacement = 8.0f * player->physics.velocity / (1.0f + L);
+            camera.update(player->physics.position + displacement, dt);
+
+            //check for level end
+            if (world->end_level) {
+                load_level();
+            }
+            break;
         }
+        lag -= dt; //accumulate lag enough so that you update world every 60th of a second
     }
 }
 
@@ -130,7 +147,9 @@ void Game::create_player() {
         {{StateType::Sprinting, Transition::Fall}, StateType::Falling},
         {{StateType::Rolling, Transition::Stop}, StateType::Standing},
         {{StateType::Rolling, Transition::Fall}, StateType::Falling},
-        {{StateType::Falling, Transition::Stop}, StateType::Standing}
+        {{StateType::Falling, Transition::Stop}, StateType::Standing},
+        {{StateType::AttackAll, Transition::Stop}, StateType::Standing},
+        {{StateType::Standing, Transition::AttackAll}, StateType::AttackAll}
     };
     States states = {
         {StateType::Standing, new Standing()},
@@ -138,7 +157,8 @@ void Game::create_player() {
         {StateType::Running, new Running()},
         {StateType::Sprinting, new Sprinting()},
         {StateType::Rolling, new Rolling()},
-        {StateType::Falling, new Falling()}
+        {StateType::Falling, new Falling()},
+        {StateType::AttackAll, new AttackAllEnemies()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 

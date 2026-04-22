@@ -7,9 +7,7 @@
 #include "fsm.h"
 
 void Keyboard_Input::get_input() {
-    if (next_action_type == ActionType::Jump) return;
-    if (next_action_type == ActionType::RollLeft) return;
-    if (next_action_type == ActionType::RollRight) return;
+    if (next_action_type == ActionType::Jump || next_action_type == ActionType::AttackAll || next_action_type == ActionType::RollLeft || next_action_type == ActionType::RollRight) return;
     const bool *key_states = SDL_GetKeyboardState(NULL);
     if (key_states[SDL_SCANCODE_A]) {
         next_action_type = ActionType::MoveLeft;
@@ -42,10 +40,15 @@ void Keyboard_Input::collect_discrete_event(SDL_Event* event) {
     if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0) {
         if (event->key.scancode == SDL_SCANCODE_SPACE) {
             next_action_type = ActionType::Jump;
-        } else if (event->key.scancode == SDL_SCANCODE_Q) {
+        }
+        if (event->key.scancode == SDL_SCANCODE_Q) {
             next_action_type = ActionType::RollLeft;
-        } else if (event->key.scancode == SDL_SCANCODE_E) {
+        }
+        if (event->key.scancode == SDL_SCANCODE_E) {
             next_action_type = ActionType::RollRight;
+        }
+        if (event->key.scancode == SDL_SCANCODE_M) {
+            next_action_type = ActionType::AttackAll;
         }
     }
 }
