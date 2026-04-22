@@ -11,6 +11,7 @@
 #include "level.h"
 
 class GameObject;
+class World;
 
 // need to map Vec to JSON
 template <typename T>
@@ -73,4 +74,5 @@ namespace AssetManager {
     void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj, bool random_start = false);
     void get_level_details(Graphics& graphics, Level& level);
     void update_level_details(const Level& level);
+    void get_available_items(const std::string& filename, Graphics& graphics, World& world);
 }

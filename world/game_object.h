@@ -19,7 +19,7 @@ public:
     GameObject(std::string name, FSM* fsm, Input* input, Color color = {255,255,0,255});
     ~GameObject();
 
-    void update(World& world, double dt);
+    virtual void update(World& world, double dt);
 
 
     std::pair<Vec<float>, Color> get_sprite() const;

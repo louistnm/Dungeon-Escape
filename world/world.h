@@ -34,4 +34,7 @@ public:
     std::map<std::string, Event*> events;
 
     Quadtree quadtree;
+
+    //items
+    std::map<std::string, std::function<GameObject*()>> available_items;
 };
