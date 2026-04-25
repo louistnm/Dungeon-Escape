@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "ai_input.h"
 #include "asset_manager.h"
 #include "fsm.h"
 #include "input.h"
@@ -65,7 +66,10 @@ void Game::update() {
         switch (mode)
         {
         case GameMode::Playing:
-            player->input->handle_input(*world, *player);
+            for (auto obj : world->game_objects) {
+                obj->input->handle_input(*world, *obj);
+            }
+
             world->update(dt);
             //put the camera slightly ahead of the player
             float L = length(player->physics.velocity);
@@ -176,6 +180,43 @@ void Game::create_player() {
     Keyboard_Input* input = new Keyboard_Input();
 
     player = std::make_unique<GameObject>("player", fsm, input, Color{255,0,0,255});
+}
+
+void Game::update_enemy(GameObject& obj) {
+    Transitions transitions;
+    States states;
+    //TODO change names
+    if (obj.obj_name == "slime") {
+        transitions = {
+            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Standing},
+            {{StateType::Standing, Transition::Fall}, StateType::InAir},
+            {{StateType::InAir, Transition::Stop}, StateType::Patrolling}
+        };
+        states = {
+            {StateType::Standing, new Standing()},
+            {StateType::Patrolling, new Patrolling()},
+            {StateType::InAir, new InAir()}
+        };
+    } else if (obj.obj_name == "bee") {
+        transitions = {
+            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Standing},
+        };
+        states = {
+            {StateType::Standing, new Standing()},
+            {StateType::Patrolling, new Patrolling()},
+        };
+    } else {
+        throw std::runtime_error("dont know what that enemy is");
+    }
+
+    FSM* fsm = new FSM{transitions, states, StateType::Patrolling};
+    obj.fsm = fsm;
+
+    Input* input = new Ai_input{};
+    input->next_action_type = ActionType::MoveRight;
+    obj.input = input;
 }
 
 

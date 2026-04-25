@@ -6,9 +6,9 @@
 #include <filesystem>
 #include <fstream>
 #include "game_object.h"
+#include "projectile.h"
 #include "random.h"
 #include "world.h"
-#include "projectile.h"
 
 
 
@@ -64,6 +64,7 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
     obj.damage = json.at("damage").get<int>();
 
     obj.set_sprite("idle");
+
 }
 
 void convert_to_tiles(Graphics& graphics, Level &level, std::vector<Tile>& tiles, const std::string& filename) {
@@ -134,6 +135,8 @@ void AssetManager::get_available_items(const std::string& filename, Graphics& gr
         std::string name = j.at("name").get<std::string>();
         Physics physics = j.at("physics").get<Physics>();
         double lifetime = j.at("lifetime").get<double>();
+        Vec<float> size = j.at("size").get<Vec<float>>(); //change to float in personal game
+        int damage = j.at("damage").get<int>();
         std::vector<Sprite> sprites_from_json = j.at("sprites").get<std::vector<Sprite>>();
 
         // build
@@ -141,10 +144,12 @@ void AssetManager::get_available_items(const std::string& filename, Graphics& gr
         convert_sprites(sprites_from_json, graphics, &tmp, false);
         auto sprites = tmp.sprites;
 
-        world.available_items[name] = [name, physics, lifetime, sprites]() {
+        world.available_items[name] = [name, physics, lifetime, sprites, size, damage]() {
             auto projectile = new Projectile{name, nullptr, nullptr, lifetime};
             projectile->physics = physics;
             projectile->sprites = sprites;
+            projectile->size = size;
+            projectile->damage = damage;
             projectile->set_sprite("idle");
             return projectile;
         };

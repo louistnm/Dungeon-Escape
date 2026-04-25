@@ -10,7 +10,7 @@ class Action;
 enum class ActionType;
 class State;
 
-enum class StateType{Standing, InAir, Running, Sprinting, Rolling, Falling, AttackAll}; //do stuff based off of appropriate things
+enum class StateType{Standing, InAir, Running, Sprinting, Rolling, Falling, AttackAll, Patrolling}; //do stuff based off of appropriate things
 enum class Transition{Jump, Stop, Move, Sprint, Roll, Fall, AttackAll}; //key current state - going to next state
 
 using Transitions = std::map<std::pair<StateType, Transition>, StateType>;

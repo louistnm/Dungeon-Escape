@@ -44,3 +44,9 @@ class RollRight : public Action {
 class RollLeft : public Action {
     void perform(World&, GameObject& obj) override;
 };
+
+//fireball code
+// class ShootFireball : public Action {
+// public:
+//     void perform(World& world, GameObject& obj) override;
+// };

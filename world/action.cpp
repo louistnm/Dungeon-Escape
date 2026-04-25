@@ -34,3 +34,9 @@ void RollLeft::perform(World&, GameObject& obj) {
     obj.physics.velocity.x = -10 + obj.physics.velocity.x;
 }
 
+//fireball code
+// void ShootFireball::perform(World& world, GameObject& obj) {
+//     auto fireball = dynamic_cast<Projectile*>(world.available_items["fireball"]());
+//     fireball->physics.position = obj.physics.position;
+//     world.projectiles.push_back(fireball);
+// }
