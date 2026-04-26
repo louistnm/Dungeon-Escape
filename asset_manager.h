@@ -9,9 +9,16 @@
 #include "json.hpp"
 #include "physics.h"
 #include "level.h"
+#include "audio.h"
 
 class GameObject;
 class World;
+
+// these are for the json library - NOTE: if I want this to be more flexible, I create my own to/from json functions and can provide default values. Then json is strict formatted
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, name, filename, location, size, scale, dt_per_frame, number_of_frames);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Physics, velocity, acceleration, gravity, damping, walk_acceleration, jump_velocity, terminal_velocity);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, sprite, blocking, event_name);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sound, name, filename, loop_forever);
 
 // need to map Vec to JSON
 template <typename T>
@@ -31,25 +38,31 @@ inline void to_json(nlohmann::json& j, const Level& level) {
     j["height"] = level.height;
     j["tile_filenames"] = level.tile_filenames;
     j["player_spawn_location"] = level.player_spawn_location;
+    j["sounds"] = level.sounds;
     j["tiles"] = nlohmann::json::array();
     for (const auto& [pos, tile] : level.tile_locations) {
         j["tiles"].push_back({
-            {"pos", pos},
-            {"tile", tile}
-        });
+                {"pos", pos},
+    {"tile", tile}
+    });
     }
-    for (const auto& [pos,enemy] : level.enemy_locations) {
+    for (const auto& [pos, enemy] : level.enemy_locations) {
         j["enemies"].push_back({
-            {"pos", pos},
-            {"enemy", enemy}
+        {"pos", pos},
+        {"enemy", enemy}
         });
     }
 }
+
+
+
 inline void from_json(const nlohmann::json& j, Level& level) {
     level.width = j.at("width").get<int>();
     level.height = j.at("height").get<int>();
     level.tile_filenames = j.at("tile_filenames").get<std::vector<std::string>>();
-    level.player_spawn_location = j.contains("player_spawn_location") ? j.at("player_spawn_location").get<Vec<int>>() : Vec<int>{-1, -1};
+    level.sounds = j.at("sounds").get<std::vector<Sound>>();
+    level.player_spawn_location = j.contains("player_spawn_location") ?
+    j.at("player_spawn_location").get<Vec<int>>() : Vec<int>{-1, -1};
     if (j.contains("tiles")) {
         for (const auto& t : j.at("tiles")) {
             Vec<int> pos = t.at("pos").get<Vec<int>>();
@@ -66,10 +79,7 @@ inline void from_json(const nlohmann::json& j, Level& level) {
     }
 }
 
-// these are for the json library - NOTE: if I want this to be more flexible, I create my own to/from json functions and can provide default values. Then json is strict formatted
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, name, filename, location, size, scale, dt_per_frame, number_of_frames);
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Physics, velocity, acceleration, gravity, damping, walk_acceleration, jump_velocity, terminal_velocity);
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, sprite, blocking, event_name);
+
 namespace AssetManager {
     void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj, bool random_start = false);
     void get_level_details(Graphics& graphics, Level& level);

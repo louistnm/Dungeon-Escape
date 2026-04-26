@@ -180,7 +180,7 @@ void World::load_level(const Level& level) {
     for (const auto& [pos, tile_id] : level.tile_locations) {
         tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
     }
-    audio->load_sounds({});
+    audio->load_sounds(level.sounds);
 
     //get all enemies
     for (const auto& [pos, enemy_name] : level.enemy_locations) {

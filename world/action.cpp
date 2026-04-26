@@ -40,3 +40,6 @@ void RollLeft::perform(World&, GameObject& obj) {
 //     fireball->physics.position = obj.physics.position;
 //     world.projectiles.push_back(fireball);
 // }
+
+// make the fireball shooting sound
+//world.audio->play_sound("fireball");

@@ -1,4 +1,30 @@
 {
+    "sounds" : [
+        {
+            "name": "background",
+            "filename" : "action-music.mp3",
+            "loop_forever": true
+        },
+        {
+            "name": "jump",
+            "filename" : "jump.wav",
+            "loop_forever": false
+        },
+        {
+            "name": "fireball",
+            "filename" : "fireball.wav",
+            "loop_forever": false
+        }
+    ],
+    "enemies": [
+        {
+            "enemy": "",
+            "pos": [
+                1,
+                1
+            ]
+        }
+    ],
     "height": 100,
     "player_spawn_location": [
         4,

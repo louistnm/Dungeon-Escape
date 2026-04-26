@@ -36,18 +36,20 @@ Audio::~Audio() {
     SDL_Quit();
 }
 
-void Audio::load_sounds(const std::unordered_map<std::string, std::string> sounds_files) {
-    auto path = std::filesystem::current_path() / "assets" / "haunted_house_theme.mp3";
-    std::ifstream input(path);
-    if (!input) {
-        throw std::runtime_error("Could not open: " + path.string());
+void Audio::load_sounds(const std::vector<Sound>& sounds_to_load) {
+    for (auto sound : sounds_to_load) {
+        auto path = std::filesystem::current_path() / "assets" / sound.filename;
+        std::ifstream input{path};
+        if (!input) {
+            throw std::runtime_error("Could not open filename: " + path.string());
+        }
+        MIX_Audio* effect = MIX_LoadAudio(mixer, path.c_str(), sound.loop_forever);
+        if (!effect) {
+            std::string msg{SDL_GetError()};
+            throw std::runtime_error(msg + "\nUnable to load sound from " + path.string());
+        }
+        sounds[sound.name] = effect;
     }
-    MIX_Audio* effect = MIX_LoadAudio(mixer, path.c_str(), true);
-    if (!effect) {
-        std::string msg{SDL_GetError()};
-        throw std::runtime_error(msg + "\nUnable to load from: " + path.string());
-    }
-    sounds["background"] = effect;
 }
 
 void Audio::play_sounds(const std::string& sound_name, bool loop_forever_in_background) {
@@ -60,7 +62,7 @@ void Audio::play_sounds(const std::string& sound_name, bool loop_forever_in_back
         SDL_PropertiesID props = SDL_CreateProperties();
         SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
         MIX_SetTrackAudio(background_music, sound->second);
-         if(!MIX_PlayTrack(background_music, props)) {
+        if(!MIX_PlayTrack(background_music, props)) {
             std::string msg {SDL_GetError()};
             throw std::runtime_error(msg + "\nUnable to play sound from: " + sound_name);
         }
