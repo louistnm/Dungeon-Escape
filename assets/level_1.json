@@ -1,34 +1,56 @@
 {
-    "sounds" : [
+    "backgrounds": [
         {
-            "name": "background",
-            "filename" : "action-music.mp3",
-            "loop_forever": true
+            "distance": 4.0,
+            "filename": "BG1.png",
+            "scale": 5.0
         },
         {
-            "name": "jump",
-            "filename" : "jump.wav",
-            "loop_forever": false
+            "distance": 2.0,
+            "filename": "BG2.png",
+            "scale": 5.0
         },
         {
-            "name": "fireball",
-            "filename" : "fireball.wav",
-            "loop_forever": false
+            "distance": 1.0,
+            "filename": "BG3.png",
+            "scale": 5.0
         }
     ],
     "enemies": [
         {
-            "enemy": "",
+            "enemy": "hell-hound",
             "pos": [
-                1,
-                1
+                20.0,
+                2.0
             ]
         }
     ],
     "height": 100,
     "player_spawn_location": [
-        4,
+        5,
         2
+    ],
+    "sounds": [
+        {
+            "filename": "action-music.mp3",
+            "loop_forever": true,
+            "name": "background"
+        },
+        {
+            "filename": "jump.wav",
+            "loop_forever": false,
+            "name": "jump"
+        },
+        {
+            "filename": "explosion.wav",
+            "loop_forever": false,
+            "name": "explosion"
+        },
+        {
+            "filename": "hurt.wav",
+            "loop_forever": false,
+            "name": "hurt"
+        }
     ],
     "tile_filenames": [
         "dungeon_sprites.json"

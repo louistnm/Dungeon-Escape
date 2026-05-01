@@ -19,6 +19,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, name, filename, location, size, scale
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Physics, velocity, acceleration, gravity, damping, walk_acceleration, jump_velocity, terminal_velocity);
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Tile, sprite, blocking, event_name);
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sound, name, filename, loop_forever);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Background, filename, scale, distance);
 
 // need to map Vec to JSON
 template <typename T>
@@ -40,6 +41,7 @@ inline void to_json(nlohmann::json& j, const Level& level) {
     j["player_spawn_location"] = level.player_spawn_location;
     j["sounds"] = level.sounds;
     j["tiles"] = nlohmann::json::array();
+    j["backgrounds"] = level.backgrounds;
     for (const auto& [pos, tile] : level.tile_locations) {
         j["tiles"].push_back({
                 {"pos", pos},
@@ -61,6 +63,7 @@ inline void from_json(const nlohmann::json& j, Level& level) {
     level.height = j.at("height").get<int>();
     level.tile_filenames = j.at("tile_filenames").get<std::vector<std::string>>();
     level.sounds = j.at("sounds").get<std::vector<Sound>>();
+    level.backgrounds = j.at("backgrounds").get<std::vector<Background>>();
     level.player_spawn_location = j.contains("player_spawn_location") ?
     j.at("player_spawn_location").get<Vec<int>>() : Vec<int>{-1, -1};
     if (j.contains("tiles")) {

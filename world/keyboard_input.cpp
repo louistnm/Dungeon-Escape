@@ -22,10 +22,9 @@ void Keyboard_Input::get_input() {
             next_action_type = ActionType::SprintRight;
         }
     }
-
 }
 
-void Keyboard_Input::handle_input(World& world, GameObject& obj) {
+void Keyboard_Input::handle_input(World& world, GameObject& obj, double) {
     Action* action = obj.fsm->current_state->input(world, obj, next_action_type);
 
     //consume action

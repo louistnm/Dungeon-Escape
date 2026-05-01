@@ -3,6 +3,13 @@
 
 #include "sprite.h"
 
+struct Background {
+    std::string filename;
+    float scale;
+    float distance;
+    Sprite sprite;
+};
+
 class Tile {
 public:
     Sprite sprite;

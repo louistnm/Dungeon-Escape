@@ -139,6 +139,11 @@ void World::update(double dt) {
     std::vector<GameObject*> collides_with = quadtree.query_range(player->get_bounding_box());
     for (auto& obj : collides_with) {
         if (obj == player) continue;
+        if (obj->physics.velocity.x < 0) {
+            player->damage_direction = 1; //hit from the right
+        } else if (obj->physics.velocity.x > 0) {
+            player->damage_direction = 0; //hit from the left
+        }
         player->take_damage(obj->damage);
     }
 
@@ -188,6 +193,8 @@ void World::load_level(const Level& level) {
         enemy->physics.position = pos;
         game_objects.push_back(enemy);
     }
+
+    backgrounds = level.backgrounds;
 
     game_objects.push_back(player);
 }

@@ -98,10 +98,16 @@ void LevelDesigner::input() {
         place_player();
     }
     if (keys[SDL_SCANCODE_1]) {
-
+        place_enemy("hell-hound");
     }
     if (keys[SDL_SCANCODE_2]) {
-
+        place_enemy("skeleton");
+    }
+    if (keys[SDL_SCANCODE_3]) {
+        place_enemy("nightborne");
+    }
+    if (keys[SDL_SCANCODE_4]) {
+        place_enemy("necromancer");
     }
 
     // timer for scrolling
@@ -120,9 +126,6 @@ void LevelDesigner::input() {
     }
     else if (keys[SDL_SCANCODE_DOWN]) {
         y_min--;
-    }
-    else if (keys[SDL_SCANCODE_BACKSLASH]) {
-        fill_all_tiles();
     }
 }
 
@@ -225,6 +228,3 @@ void LevelDesigner::place_enemy(std::string enemy_name) {
     level.enemy_locations[{static_cast<float>(selected_tile.x), static_cast<float>(selected_tile.y)}] = enemy_name;
 }
 
-void LevelDesigner::fill_all_tiles() {
-
-}

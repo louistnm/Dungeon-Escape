@@ -3,6 +3,9 @@
 //
 
 #include "game_object.h"
+
+#include <__ranges/take_view.h>
+
 #include "physics.h"
 #include "fsm.h"
 #include "input.h"
@@ -23,6 +26,12 @@ void GameObject::update(World& world, double dt) {
     sprites[sprite_name].update(dt);
     sprites[sprite_name].flip(physics.acceleration.x < 0);
     set_sprite(sprite_name);
+
+    iframe_time -= dt;
+
+    if (iframe_time <= 0.0) {
+        taken_damage = false;
+    }
 }
 
 std::pair<Vec<float>, Color> GameObject::get_sprite() const {
@@ -43,6 +52,7 @@ void GameObject::set_sprite(const std::string& next_sprite) {
     }
 
     sprite = sprites[sprite_name].get_sprite();
+
 }
 
 AABB GameObject::get_bounding_box() {
@@ -53,8 +63,10 @@ AABB GameObject::get_bounding_box() {
 
 void GameObject::take_damage(int attack_damage) {
     if (iframe_time > 0.0) return;
+    if (invulnerable) return;
     health -= attack_damage;
-    iframe_time = 0.5;
+    iframe_time = 1.5;
+    taken_damage = true;
     if (health <= 0){
         is_alive = false;
     }
@@ -64,7 +76,6 @@ bool GameObject::flash_sprite() const {
     if (iframe_time <= 0.0) {
         return false;
     }
-
     // alternate overlay on/off every 80 ms
     return ((SDL_GetTicks() / 80) % 2) == 0;
 }

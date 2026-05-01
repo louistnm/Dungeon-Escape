@@ -59,10 +59,19 @@ void Camera::set_location(const Vec<float>& new_location) {
     calculate_visible_tiles();
 }
 
-void Camera::render(const Vec<float>& position, const Color& color, bool filled) const {
+void Camera::render(const Vec<float> &position, const Color &color, bool filled, Vec<float> size) const {
     Vec<float> pixel = world_to_screen(position);
-    pixel -= Vec{tilesize/2, tilesize/2}; //center on tile
-    SDL_FRect rect{pixel.x, pixel.y, tilesize, tilesize};
+
+    // move from center to bottom left
+    pixel.x -= tilesize / 2.0f;
+    pixel.y += tilesize / 2.0f;
+
+    // offset by full height so feet stay at bottom anchor
+    float screen_w = tilesize * size.x;
+    float screen_h = tilesize * size.y;
+
+
+    SDL_FRect rect{pixel.x, pixel.y - screen_h, screen_w, screen_h};
     graphics.draw(rect, color, filled);
 }
 
@@ -90,17 +99,26 @@ void Camera::render(const Tilemap& tilemap) const {
     }
 }
 
-void Camera::render(const Vec<float>& position, const Sprite& sprite, bool flash) const {
+void Camera::render(const Vec<float> &position, const Sprite &sprite, bool flash, Vec<float> size) const {
     Vec<float> pixel = world_to_screen(position);
-    pixel.y += tilesize/2;
+    float x_offset = (size.x - 1) * (tilesize / 2.0f);
+    pixel.x += x_offset;
+    pixel.y += tilesize / 2.0f;
     graphics.draw_sprite(pixel, sprite, flash);
 }
 
 void Camera::render(const GameObject& obj) const {
     if (grid_toggle.on) {
-        render(obj.physics.position, obj.color);
+        render(obj.physics.position, obj.color, true, obj.size);
     }
     render(obj.physics.position, obj.sprite, obj.flash_sprite());
+}
+
+void Camera::render(const std::vector<Background>& backgrounds) const {
+    for (auto background : backgrounds) {
+        float shift = physics.position.x / background.distance;
+        graphics.draw_sprite({-shift, 0}, background.sprite);
+    }
 }
 
 void Camera::render_game_over() {

@@ -84,11 +84,10 @@ void Graphics::draw_sprite(const Vec<float> &pixel, const Sprite &sprite, bool f
     SDL_FRect image_pixels{sprite.location.x, sprite.location.y, sprite.size.x, sprite.size.y};
     SDL_Texture* texture = textures.at(sprite.texture_id);
     SDL_FlipMode flip = sprite.flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    SDL_RenderTextureRotated(renderer, texture, &image_pixels, &screen_pixels, sprite.angle, &center, flip);
 
     if (flash) {
         SDL_SetTextureColorMod(texture, 255, 255, 255);
-        SDL_SetTextureAlphaMod(texture, 160);
+        SDL_SetTextureAlphaMod(texture, 80);
     }
 
     SDL_RenderTextureRotated(renderer, texture, &image_pixels, &screen_pixels, sprite.angle, &center, flip);
@@ -97,4 +96,15 @@ void Graphics::draw_sprite(const Vec<float> &pixel, const Sprite &sprite, bool f
         SDL_SetTextureColorMod(texture, 255, 255, 255);
         SDL_SetTextureAlphaMod(texture, 255);
     }
+}
+
+Sprite Graphics::load_image(const std::string &filename) {
+    int id = get_texture_id(filename);
+    auto texture = textures.at(id);
+    float width, height;
+    SDL_GetTextureSize(texture, &width, &height);
+    Sprite sprite;
+    sprite.texture_id = id;
+    sprite.size = {width, height};
+    return sprite;
 }

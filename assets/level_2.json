@@ -1,19 +1,41 @@
 {
-    "sounds" : [
+    "backgrounds" : [
         {
-            "name": "background",
-            "filename" : "action-music.mp3",
-            "loop_forever": true
+            "filename": "BG1.png",
+            "scale" : 5,
+            "distance": 4
         },
         {
-            "name": "jump",
-            "filename" : "jump.wav",
-            "loop_forever": false
+            "filename" : "BG2.png",
+            "scale" : 5,
+            "distance" : 2
         },
         {
-            "name": "fireball",
-            "filename" : "fireball.wav",
-            "loop_forever": false
+            "filename" : "BG3.png",
+            "scale" : 5,
+            "distance" : 1
+        }
+    ],
+    "sounds": [
+        {
+            "filename": "action-music.mp3",
+            "loop_forever": true,
+            "name": "background"
+        },
+        {
+            "filename": "jump.wav",
+            "loop_forever": false,
+            "name": "jump"
+        },
+        {
+            "filename": "explosion.wav",
+            "loop_forever": false,
+            "name": "explosion"
+        },
+        {
+            "filename": "hurt.wav",
+            "loop_forever": false,
+            "name": "hurt"
         }
     ],
     "enemies": [

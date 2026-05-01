@@ -34,6 +34,8 @@ public:
     Audio* audio;
     std::vector<GameObject*> game_objects;
     std::vector<Projectile*> projectiles;
+    std::vector<Background> backgrounds;
+
     std::map<std::string, Event*> events;
 
     Quadtree quadtree;

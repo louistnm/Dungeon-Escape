@@ -32,5 +32,7 @@ public:
 
     std::vector<Sound> sounds;
 
+    std::vector<Background> backgrounds;
+
 
 };

@@ -3,6 +3,7 @@
 //
 
 #include "level.h"
+#include "audio.h"
 
 Level::Level(std::string name)
     : name{name}{}

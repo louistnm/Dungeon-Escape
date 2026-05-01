@@ -11,6 +11,16 @@ public:
     double cooldown{0.0};
 };
 
+class Waiting : public Standing {
+public:
+    void on_enter(World&, GameObject&) override;
+    Action* input(World&, GameObject&, ActionType) override;
+    void update(World&, GameObject&, double dt) override;
+
+    double elapsed{0.0};
+    double cooldown{0.0};
+};
+
 class Running : public State {
 public:
     virtual void on_enter(World&, GameObject&) override;
@@ -72,4 +82,22 @@ public:
 
     double elapsed = 0;
     double cooldown = 2;
+};
+
+class Targeting : public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    void update(World&, GameObject&, double dt) override;
+
+    double elapsed = 0;
+    double cooldown = 0.5;
+};
+
+class Knocked : public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    void update(World&, GameObject&, double dt) override;
+
+    double elapsed = 0;
+    double cooldown = 0.5;
 };

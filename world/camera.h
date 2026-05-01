@@ -7,7 +7,7 @@
 
 class Graphics;
 class Color;
-class Sprite;
+struct Sprite;
 class GameObject;
 
 class Camera {
@@ -19,10 +19,11 @@ public:
     Vec<float> world_to_screen(const Vec<float>& world_position) const;
     void set_location(const Vec<float>& new_location);
 
-    void render(const Vec<float>& position, const Color& color, bool filled=true) const;
+    void render(const Vec<float>& position, const Color& color, bool filled=true, Vec<float> size = {1.0f, 1.0f}) const;
     void render(const Tilemap& tilemap) const;
-    void render(const Vec<float>& position, const Sprite& sprite, bool flash=false) const;
+    void render(const Vec<float>& position, const Sprite& sprite, bool flash=false, Vec<float> size = {1.0f, 1.0f}) const;
     void render(const GameObject& obj) const;
+    void render(const std::vector<Background>& backgrounds) const;
 
     void render_game_over();
 

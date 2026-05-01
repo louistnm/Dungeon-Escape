@@ -46,15 +46,14 @@ void Game::handle_event(SDL_Event* event) {
         player->input->collect_discrete_event(event);
         break;
     }
-    player->input->collect_discrete_event(event);
 }
 
 void Game::input() {
-    switch (mode)
-    {
+    switch (mode) {
     case GameMode::Playing:
         player->input->get_input();
         camera.handle_input();
+        break;
     }
 }
 
@@ -67,7 +66,7 @@ void Game::update() {
         {
         case GameMode::Playing:
             for (auto obj : world->game_objects) {
-                obj->input->handle_input(*world, *obj);
+                obj->input->handle_input(*world, *obj, dt);
             }
 
             world->update(dt);
@@ -95,12 +94,15 @@ void Game::render() {
     //clear
     graphics.clear();
 
+    // draw the backgrounds
+    camera.render(world->backgrounds);
+
     //draw world
     camera.render(world->tilemap);
 
     //draw the player
 
-    camera.render(*player);
+    //camera.render(*player);
 
     //enemies
     for (auto& obj : world->game_objects) {
@@ -131,6 +133,7 @@ void Game::load_level() {
     //assets for objects
     for (auto& obj : world->game_objects) {
         if (obj == world->player) continue;
+        update_enemy(*obj);
         AssetManager::get_game_object_details(obj->obj_name + "-enemy", graphics, *obj, true);
     }
 
@@ -148,22 +151,27 @@ void Game::create_player() {
         {{StateType::Standing, Transition::Move}, StateType::Running},
         {{StateType::Standing, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Standing, Transition::Fall}, StateType::Falling},
-        {{StateType::Standing, Transition::Roll}, StateType::Rolling},
+        {{StateType::Standing, Transition::Hit}, StateType::Knocked},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
         {{StateType::Running, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Running, Transition::Jump}, StateType::InAir},
         {{StateType::Running, Transition::Roll}, StateType::Rolling},
         {{StateType::Running, Transition::Fall}, StateType::Falling},
+        {{StateType::Running, Transition::Hit}, StateType::Knocked},
         {{StateType::Sprinting, Transition::Stop}, StateType::Standing},
         {{StateType::Sprinting, Transition::Move}, StateType::Running},
         {{StateType::Sprinting, Transition::Roll}, StateType::Rolling},
         {{StateType::Sprinting, Transition::Jump}, StateType::InAir},
         {{StateType::Sprinting, Transition::Fall}, StateType::Falling},
+        {{StateType::Sprinting, Transition::Hit}, StateType::Knocked},
         {{StateType::Rolling, Transition::Stop}, StateType::Standing},
         {{StateType::Rolling, Transition::Fall}, StateType::Falling},
         {{StateType::Falling, Transition::Stop}, StateType::Standing},
+        {{StateType::Falling, Transition::Hit}, StateType::Knocked},
         {{StateType::AttackAll, Transition::Stop}, StateType::Standing},
-        {{StateType::Standing, Transition::AttackAll}, StateType::AttackAll}
+        {{StateType::Standing, Transition::AttackAll}, StateType::AttackAll},
+        {{StateType::Knocked, Transition::Fall}, StateType::Falling},
+        {{StateType::Knocked, Transition::Stop}, StateType::Standing}
     };
     States states = {
         {StateType::Standing, new Standing()},
@@ -172,7 +180,8 @@ void Game::create_player() {
         {StateType::Sprinting, new Sprinting()},
         {StateType::Rolling, new Rolling()},
         {StateType::Falling, new Falling()},
-        {StateType::AttackAll, new AttackAllEnemies()}
+        {StateType::AttackAll, new AttackAllEnemies()},
+        {StateType::Knocked, new Knocked()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
@@ -185,26 +194,44 @@ void Game::create_player() {
 void Game::update_enemy(GameObject& obj) {
     Transitions transitions;
     States states;
-    //TODO change names
-    if (obj.obj_name == "slime") {
+    if (obj.obj_name == "hell-hound") {
         transitions = {
-            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
-            {{StateType::Patrolling, Transition::Stop}, StateType::Standing},
-            {{StateType::Standing, Transition::Fall}, StateType::InAir},
-            {{StateType::InAir, Transition::Stop}, StateType::Patrolling}
+            {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
+            {{StateType::Waiting, Transition::Target}, StateType::Targeting},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
+            {{StateType::Patrolling, Transition::Target}, StateType::Targeting},
+            {{StateType::Targeting, Transition::Stop}, StateType::Waiting}
         };
         states = {
-            {StateType::Standing, new Standing()},
+            {StateType::Waiting, new Waiting()},
             {StateType::Patrolling, new Patrolling()},
-            {StateType::InAir, new InAir()}
+            {StateType::Targeting, new Targeting()}
         };
-    } else if (obj.obj_name == "bee") {
+    } else if (obj.obj_name == "necromancer") {
         transitions = {
-            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
-            {{StateType::Patrolling, Transition::Stop}, StateType::Standing},
+            {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
         };
         states = {
-            {StateType::Standing, new Standing()},
+            {StateType::Waiting, new Waiting()},
+            {StateType::Patrolling, new Patrolling()},
+        };
+    } else if (obj.obj_name == "skeleton") {
+        transitions = {
+            {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
+        };
+        states = {
+            {StateType::Waiting, new Waiting()},
+            {StateType::Patrolling, new Patrolling()},
+        };
+    } else if (obj.obj_name == "nightborne") {
+        transitions = {
+            {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
+        };
+        states = {
+            {StateType::Waiting, new Waiting()},
             {StateType::Patrolling, new Patrolling()},
         };
     } else {
@@ -214,7 +241,7 @@ void Game::update_enemy(GameObject& obj) {
     FSM* fsm = new FSM{transitions, states, StateType::Patrolling};
     obj.fsm = fsm;
 
-    Input* input = new Ai_input{};
+    Input* input = new AiInput{};
     input->next_action_type = ActionType::MoveRight;
     obj.input = input;
 }

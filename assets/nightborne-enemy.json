@@ -1,0 +1,63 @@
+{
+  "sprites" : [
+    {
+      "name" : "idle",
+      "filename" : "nightborne.png",
+      "location" : [0, 0],
+      "size" : [80, 80],
+      "scale" : 2,
+      "number_of_frames" : 9,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "running",
+      "filename" : "nightborne.png",
+      "location" : [0, 32],
+      "size" : [80, 80],
+      "scale" : 2,
+      "number_of_frames" : 6,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "attacking",
+      "filename" : "nightborne.png",
+      "location" : [0, 64],
+      "size" : [80, 80],
+      "scale" : 2,
+      "number_of_frames" : 12,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "hurt",
+      "filename" : "nightborne.png",
+      "location" : [0, 96],
+      "size" : [80, 80],
+      "scale" : 2,
+      "number_of_frames" : 5,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "dying",
+      "filename" : "nightborne.png",
+      "location" : [0, 128],
+      "size" : [80, 80],
+      "scale" : 23,
+      "number_of_frames" : 23,
+      "dt_per_frame" : 0.1
+    }
+  ],
+  "physics" : {
+    "velocity": [0, 0],
+    "acceleration" : [0, -30],
+    "gravity": -30.0,
+    "damping": 0.9,
+    "walk_acceleration": 60.0,
+    "jump_velocity": 20.0,
+    "terminal_velocity": 30.0
+  },
+  "size": [2,2],
+  "health" : 10,
+  "max_health" : 10,
+  "damage" : 2,
+  "detection_distance" : [0,0]
+}

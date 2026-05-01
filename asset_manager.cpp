@@ -62,6 +62,7 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
     obj.health = json.at("health").get<int>();
     obj.max_health = json.at("max_health").get<int>();
     obj.damage = json.at("damage").get<int>();
+    obj.detection_distance = json.at("detection_distance").get<Vec<int>>();
 
     obj.set_sprite("idle");
 
@@ -104,6 +105,12 @@ void AssetManager::get_level_details(Graphics &graphics, Level &level) {
         std::vector<Tile> tiles = tile_json.at("tiles").get<std::vector<Tile>>();
         convert_to_tiles(graphics, level, tiles, filename);
     }
+
+    // get sprites for backgrounds
+    // for (auto& background : level.backgrounds) {
+    //     background.sprite = graphics.load_image(path_start / (background.filename));
+    //     background.sprite.scale = background.scale;
+    // }
 }
 
 void AssetManager::update_level_details(const Level& level) {

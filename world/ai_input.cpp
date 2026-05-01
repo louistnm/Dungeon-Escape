@@ -7,12 +7,13 @@
 #include "world.h"
 #include "game_object.h"
 #include "fsm.h"
+#include <iostream>
 
-void Ai_input::get_input() {
+void AiInput::get_input() {
 
 }
 
-void Ai_input::handle_input(World& world, GameObject& obj) {
+void AiInput::handle_input(World& world, GameObject& obj, double dt) {
     constexpr float epsilon = 1e-4;
 
     //check for colliding with left wall
@@ -30,4 +31,5 @@ void Ai_input::handle_input(World& world, GameObject& obj) {
         action->perform(world, obj);
         delete action;
     }
+
 }

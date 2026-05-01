@@ -67,5 +67,6 @@
   "size" : [1,2],
   "health" : 10,
   "max_health" : 10,
-  "damage" : 2
+  "damage" : 2,
+  "detection_distance" : [0,0]
 }

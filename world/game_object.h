@@ -47,6 +47,11 @@ public:
     int health;
     int max_health;
     int damage;
-    bool is_alive{true};
+    Vec<int> detection_distance;
     double iframe_time{0.0};
+
+    bool is_alive{true};
+    bool taken_damage{false};
+    bool invulnerable{false};
+    int damage_direction = -1; // 0 is for hit from left, 1 is for hit from right
 };
