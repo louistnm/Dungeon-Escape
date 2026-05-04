@@ -20,16 +20,16 @@ https://incolgames.itch.io/dungeon-platformer-tile-set-pixel-art
 The background music is a free sound file from Strawberry&J 
 https://strawberry-games.itch.io/haunted-house-game-assets-free 
 
-I used some sound effects from a compilation made by Chequered Ink \ 
+I used some sound effects from a compilation made by Chequered Ink  
 https://ci.itch.io/400-sounds-pack 
 
-I also used some sound effects from Kronbits \ 
+I also used some sound effects from Kronbits 
 https://kronbits.itch.io/freesfx 
 
-I used a dark souls "you died" sound effect found on creatorset for the player's death sound - thank you fromsoft I love your games \ 
+I used a dark souls "you died" sound effect found on creatorset for the player's death sound - thank you fromsoft I love your games  
 https://creatorset.com/products/dark-souls-you-died-sound-effect?srsltid=AfmBOoqZY7xwXKCMyE1788s2a9HyW2xrrwBNijPanJOKvJDxMHN-2kX9 
 
-I also used an "enemy felled" sound effect found on zedge from elden ring - thank you fromsoft I loved elden ring \ 
+I also used an "enemy felled" sound effect found on zedge from elden ring - thank you fromsoft I loved elden ring 
 https://www.zedge.net/ringtones/cb9e15ad-80d8-4337-afdc-97982311e80a 
 
 I make no money from this game at all, this creation is purely passion and a result of a computer science class \ 
