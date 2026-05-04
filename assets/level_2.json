@@ -67,7 +67,7 @@
     ],
     "sounds": [
         {
-            "filename": "haunted_house_theme.mp3",
+            "filename": "final_boss.ogg",
             "loop_forever": true,
             "name": "background"
         },
