@@ -2,18 +2,18 @@
   "sprites" : [
     {
       "name" : "idle",
-      "filename" : "necromancer.png",
+      "filename" : "necromancer-idle.png",
       "location" : [0, 0],
-      "size" : [32, 32],
+      "size" : [160, 160],
       "scale" : 2,
       "number_of_frames" : 8,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "running",
-      "filename" : "necromancer.png",
-      "location" : [0, 32],
-      "size" : [32, 32],
+      "filename" : "necromancer-run.png",
+      "location" : [0, 0],
+      "size" : [160, 160],
       "scale" : 2,
       "number_of_frames" : 8,
       "dt_per_frame" : 0.1
@@ -22,25 +22,25 @@
       "name" : "attacking",
       "filename" : "necromancer.png",
       "location" : [0, 64],
-      "size" : [32, 32],
+      "size" : [160, 160],
       "scale" : 2,
       "number_of_frames" : 13,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "hurt",
-      "filename" : "necromancer.png",
-      "location" : [0, 160],
-      "size" : [32, 32],
+      "filename" : "necromancer-hurt.png",
+      "location" : [0, 0],
+      "size" : [160, 160],
       "scale" : 2,
       "number_of_frames" : 5,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "dying",
-      "filename" : "nightborne.png",
-      "location" : [0, 192],
-      "size" : [32, 32],
+      "filename" : "necromancer-death.png",
+      "location" : [0, 0],
+      "size" : [160, 160],
       "scale" : 23,
       "number_of_frames" : 9,
       "dt_per_frame" : 0.1
@@ -55,9 +55,11 @@
     "jump_velocity": 20.0,
     "terminal_velocity": 30.0
   },
-  "size": [2,2],
-  "health" : 10,
-  "max_health" : 10,
+  "size": [1,2],
+  "health" : 20,
+  "max_health" : 20,
   "damage" : 2,
-  "detection_distance" : [0,0]
+  "detection_distance" : [0,0],
+  "invulnerable" : false,
+  "attack_range" : 7
 }

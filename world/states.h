@@ -84,6 +84,15 @@ public:
     double cooldown = 2;
 };
 
+class Attacking : public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    void update(World&, GameObject&, double dt) override;
+
+    double elapsed = 0;
+    double cooldown = 0.5;
+};
+
 class Targeting : public State {
 public:
     void on_enter(World&, GameObject&) override;

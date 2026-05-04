@@ -4,8 +4,6 @@
 
 #include "game_object.h"
 
-#include <__ranges/take_view.h>
-
 #include "physics.h"
 #include "fsm.h"
 #include "input.h"

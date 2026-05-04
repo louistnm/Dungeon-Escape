@@ -18,10 +18,66 @@
     ],
     "enemies": [
         {
+            "enemy": "skeleton",
+            "pos": [
+                4.0,
+                27.0
+            ]
+        },
+        {
+            "enemy": "necromancer",
+            "pos": [
+                10.0,
+                21.0
+            ]
+        },
+        {
+            "enemy": "hell-hound",
+            "pos": [
+                12.0,
+                52.0
+            ]
+        },
+        {
+            "enemy": "skeleton",
+            "pos": [
+                14.0,
+                14.0
+            ]
+        },
+        {
+            "enemy": "hell-hound",
+            "pos": [
+                15.0,
+                89.0
+            ]
+        },
+        {
+            "enemy": "necromancer",
+            "pos": [
+                16.0,
+                43.0
+            ]
+        },
+        {
+            "enemy": "hell-hound",
+            "pos": [
+                18.0,
+                89.0
+            ]
+        },
+        {
             "enemy": "hell-hound",
             "pos": [
                 20.0,
                 2.0
+            ]
+        },
+        {
+            "enemy": "necromancer",
+            "pos": [
+                21.0,
+                75.0
             ]
         }
     ],
@@ -32,7 +88,7 @@
     ],
     "sounds": [
         {
-            "filename": "action-music.mp3",
+            "filename": "haunted_house_theme.mp3",
             "loop_forever": true,
             "name": "background"
         },
@@ -42,14 +98,34 @@
             "name": "jump"
         },
         {
-            "filename": "explosion.wav",
+            "filename": "dark_souls_death.mp3",
             "loop_forever": false,
-            "name": "explosion"
+            "name": "death"
         },
         {
             "filename": "hurt.wav",
             "loop_forever": false,
             "name": "hurt"
+        },
+        {
+            "filename": "foley_footstep_concrete_2.wav",
+            "loop_forever": false,
+            "name": "step"
+        },
+        {
+            "filename": "retro_magic_protection_25.wav",
+            "loop_forever": false,
+            "name": "necromancer"
+        },
+        {
+            "filename": "retro_wolf_b_02.wav",
+            "loop_forever": false,
+            "name": "wolf"
+        },
+        {
+            "filename": "sword_slice.wav",
+            "loop_forever": false,
+            "name": "sword"
         }
     ],
     "tile_filenames": [
@@ -3127,7 +3203,7 @@
                 4,
                 38
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -3820,7 +3896,7 @@
                 5,
                 37
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -3925,7 +4001,7 @@
                 5,
                 52
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_scattered_top"
         },
         {
             "pos": [
@@ -3953,7 +4029,7 @@
                 5,
                 56
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
@@ -4030,14 +4106,14 @@
                 5,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_right"
         },
         {
             "pos": [
                 5,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_right"
         },
         {
             "pos": [
@@ -4646,14 +4722,14 @@
                 6,
                 55
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 6,
                 56
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
@@ -4667,7 +4743,7 @@
                 6,
                 58
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
@@ -4723,21 +4799,21 @@
                 6,
                 66
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 6,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_right"
         },
         {
             "pos": [
                 6,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_right"
         },
         {
             "pos": [
@@ -5178,7 +5254,7 @@
                 7,
                 31
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -5192,14 +5268,14 @@
                 7,
                 33
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
                 7,
                 34
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -5325,7 +5401,7 @@
                 7,
                 52
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_scattered_top"
         },
         {
             "pos": [
@@ -5339,21 +5415,21 @@
                 7,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 7,
                 55
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
                 7,
                 56
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_scattered_top"
         },
         {
             "pos": [
@@ -5430,14 +5506,14 @@
                 7,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 7,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
@@ -6130,14 +6206,14 @@
                 8,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_top_left"
         },
         {
             "pos": [
                 8,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_top_left"
         },
         {
             "pos": [
@@ -7320,14 +7396,14 @@
                 10,
                 37
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_bottom_left"
         },
         {
             "pos": [
                 10,
                 38
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_left"
         },
         {
             "pos": [
@@ -7369,14 +7445,14 @@
                 10,
                 44
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_right"
         },
         {
             "pos": [
                 10,
                 45
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_right"
         },
         {
             "pos": [
@@ -7439,7 +7515,7 @@
                 10,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_scattered_top"
         },
         {
             "pos": [
@@ -8020,14 +8096,14 @@
                 11,
                 37
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_bottom_right"
         },
         {
             "pos": [
                 11,
                 38
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_right"
         },
         {
             "pos": [
@@ -8062,28 +8138,28 @@
                 11,
                 43
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 11,
                 44
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 11,
                 45
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 11,
                 46
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_right"
         },
         {
             "pos": [
@@ -8167,14 +8243,14 @@
                 11,
                 58
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
                 11,
                 59
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -8685,14 +8761,14 @@
                 12,
                 32
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
                 12,
                 33
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -8762,28 +8838,28 @@
                 12,
                 43
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 12,
                 44
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 12,
                 45
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 12,
                 46
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_right"
         },
         {
             "pos": [
@@ -8839,14 +8915,14 @@
                 12,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_eye_bottom_left"
         },
         {
             "pos": [
                 12,
                 55
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_eye_top_left"
         },
         {
             "pos": [
@@ -8860,7 +8936,7 @@
                 12,
                 57
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -8916,7 +8992,7 @@
                 12,
                 65
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_left"
         },
         {
             "pos": [
@@ -9469,21 +9545,21 @@
                 13,
                 44
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_bottom_left"
         },
         {
             "pos": [
                 13,
                 45
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 13,
                 46
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
@@ -9539,14 +9615,14 @@
                 13,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_eye_bottom_right"
         },
         {
             "pos": [
                 13,
                 55
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_eye_top_right"
         },
         {
             "pos": [
@@ -9616,7 +9692,7 @@
                 13,
                 65
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_right"
         },
         {
             "pos": [
@@ -10169,21 +10245,21 @@
                 14,
                 44
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 14,
                 45
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
                 14,
                 46
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_medium_top_left"
         },
         {
             "pos": [
@@ -10337,7 +10413,7 @@
                 14,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -11009,7 +11085,7 @@
                 15,
                 64
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -12885,7 +12961,7 @@
                 18,
                 32
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_light_bottom_left"
         },
         {
             "pos": [
@@ -13116,133 +13192,133 @@
                 18,
                 65
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 66
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 69
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 70
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 71
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 72
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 73
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 74
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 75
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 76
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 77
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 78
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 79
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 80
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 81
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 82
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 18,
                 83
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
@@ -13816,133 +13892,133 @@
                 19,
                 65
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 66
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 67
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 68
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 69
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 70
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 71
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 72
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 73
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 74
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 75
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 76
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 77
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 78
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 79
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 80
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 81
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 82
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 19,
                 83
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
@@ -14488,14 +14564,14 @@
                 20,
                 61
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 20,
                 62
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
@@ -15188,7 +15264,7 @@
                 21,
                 61
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
@@ -15727,14 +15803,14 @@
                 22,
                 38
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_bottom_left"
         },
         {
             "pos": [
                 22,
                 39
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_left"
         },
         {
             "pos": [
@@ -16427,14 +16503,14 @@
                 23,
                 38
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_bottom_right"
         },
         {
             "pos": [
                 23,
                 39
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_jail_top_right"
         },
         {
             "pos": [
@@ -16763,84 +16839,84 @@
                 23,
                 86
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 87
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 88
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 89
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 90
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 91
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 92
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 93
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 94
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 95
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 96
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
                 23,
                 97
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_left"
         },
         {
             "pos": [
@@ -17470,77 +17546,77 @@
                 24,
                 87
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 88
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 89
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 90
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 91
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 92
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 93
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 94
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 95
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 96
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
                 24,
                 97
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_heavy_bottom_right"
         },
         {
             "pos": [
@@ -17925,7 +18001,7 @@
                 25,
                 52
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
@@ -18625,28 +18701,28 @@
                 26,
                 52
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 26,
                 53
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 26,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
                 26,
                 55
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
@@ -18681,14 +18757,14 @@
                 26,
                 60
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
                 26,
                 61
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_left"
         },
         {
             "pos": [
@@ -19339,7 +19415,7 @@
                 27,
                 54
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_sway_top_right"
         },
         {
             "pos": [
@@ -19388,14 +19464,14 @@
                 27,
                 61
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_pyramid_bottom_left"
         },
         {
             "pos": [
                 27,
                 62
             ],
-            "tile": "dungeon_sprites.json:brick_middle"
+            "tile": "dungeon_sprites.json:background_brick_pyramid_bottom_left"
         },
         {
             "pos": [

@@ -79,6 +79,9 @@ void Game::update() {
             if (world->end_level) {
                 load_level();
             }
+            if (final_level) {
+                mode = GameMode::Win;
+            }
 
             //check for game over
             if (world -> end_game) {
@@ -112,6 +115,9 @@ void Game::render() {
     if (mode == GameMode::GameOver) {
         camera.render_game_over();
     }
+    if (mode == GameMode::Win) {
+        camera.render_win();
+    }
 
     //update()
     graphics.update();
@@ -123,6 +129,10 @@ void Game::get_events() {
 
 void Game::load_level() {
     std::string level_name = "level_" + std::to_string(++current_level);
+    if (current_level == 3) {
+        final_level = true;
+        world->audio->play_sounds("win");
+    }
     Level level{level_name};
     AssetManager::get_level_details(graphics, level);
 
@@ -152,6 +162,7 @@ void Game::create_player() {
         {{StateType::Standing, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Standing, Transition::Fall}, StateType::Falling},
         {{StateType::Standing, Transition::Hit}, StateType::Knocked},
+        {{StateType::Standing, Transition::Attack}, StateType::Attacking},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
         {{StateType::Running, Transition::Sprint}, StateType::Sprinting},
         {{StateType::Running, Transition::Jump}, StateType::InAir},
@@ -171,7 +182,9 @@ void Game::create_player() {
         {{StateType::AttackAll, Transition::Stop}, StateType::Standing},
         {{StateType::Standing, Transition::AttackAll}, StateType::AttackAll},
         {{StateType::Knocked, Transition::Fall}, StateType::Falling},
-        {{StateType::Knocked, Transition::Stop}, StateType::Standing}
+        {{StateType::Knocked, Transition::Stop}, StateType::Standing},
+        {{StateType::Attacking, Transition::Stop}, StateType::Standing},
+        {{StateType::Attacking, Transition::Hit}, StateType::Knocked}
     };
     States states = {
         {StateType::Standing, new Standing()},
@@ -181,7 +194,8 @@ void Game::create_player() {
         {StateType::Rolling, new Rolling()},
         {StateType::Falling, new Falling()},
         {StateType::AttackAll, new AttackAllEnemies()},
-        {StateType::Knocked, new Knocked()}
+        {StateType::Knocked, new Knocked()},
+        {StateType::Attacking, new Attacking()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
@@ -220,19 +234,14 @@ void Game::update_enemy(GameObject& obj) {
         transitions = {
             {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
             {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
+            {{StateType::Waiting, Transition::Target}, StateType::Targeting},
+            {{StateType::Patrolling, Transition::Target}, StateType::Targeting},
+            {{StateType::Targeting, Transition::Stop}, StateType::Waiting},
         };
         states = {
             {StateType::Waiting, new Waiting()},
             {StateType::Patrolling, new Patrolling()},
-        };
-    } else if (obj.obj_name == "nightborne") {
-        transitions = {
-            {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
-            {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
-        };
-        states = {
-            {StateType::Waiting, new Waiting()},
-            {StateType::Patrolling, new Patrolling()},
+            {StateType::Targeting, new Targeting()},
         };
     } else {
         throw std::runtime_error("dont know what that enemy is");
@@ -246,5 +255,18 @@ void Game::update_enemy(GameObject& obj) {
     obj.input = input;
 }
 
+//code for future ambitions
+// } else if (obj.obj_name == "night-borne") {
+//     transitions = {
+//         {{StateType::Waiting, Transition::Move}, StateType::Patrolling},
+//         {{StateType::Waiting, Transition::Target}, StateType::Targeting},
+//         {{StateType::Patrolling, Transition::Stop}, StateType::Waiting},
+//         {{StateType::Patrolling, Transition::Target}, StateType::Targeting}
+//     };
+//     states = {
+//         {StateType::Waiting, new Waiting()},
+//         {StateType::Patrolling, new Patrolling()},
+//         {StateType::Targeting, new Targeting()}
+//     };
 
 

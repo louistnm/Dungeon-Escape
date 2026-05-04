@@ -8,6 +8,7 @@
 #include  "level.h"
 #include "audio.h"
 #include "events.h"
+#include "random.h"
 
 World::World(const Level& level, Audio& audio, GameObject* player, std::map<std::string, Event*> events)
     : tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events},
@@ -143,6 +144,8 @@ void World::update(double dt) {
             player->damage_direction = 1; //hit from the right
         } else if (obj->physics.velocity.x > 0) {
             player->damage_direction = 0; //hit from the left
+        } else {
+            player->damage_direction = randint(0,1);
         }
         player->take_damage(obj->damage);
     }
@@ -177,6 +180,7 @@ void World::update(double dt) {
     //check for player death
     if (!player->is_alive) {
         end_game = true;
+        audio->play_sounds("death");
         return;
     }
 }

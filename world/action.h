@@ -5,7 +5,7 @@
 #pragma once
 
 enum class ActionType {
-    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight, RollLeft, RollRight, AttackAll
+    None, Jump, MoveLeft, MoveRight, SprintLeft, SprintRight, RollLeft, RollRight, AttackAll, Attack, ShootFireball
 };
 
 class World;
@@ -45,8 +45,12 @@ class RollLeft : public Action {
     void perform(World&, GameObject& obj) override;
 };
 
-//fireball code
-// class ShootFireball : public Action {
-// public:
-//     void perform(World& world, GameObject& obj) override;
-// };
+class Attack : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+
+class ShootFireball : public Action {
+public:
+    void perform(World& world, GameObject& obj) override;
+};

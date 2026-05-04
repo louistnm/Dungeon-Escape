@@ -54,4 +54,5 @@ public:
     bool taken_damage{false};
     bool invulnerable{false};
     int damage_direction = -1; // 0 is for hit from left, 1 is for hit from right
+    double attack_range = 0;
 };

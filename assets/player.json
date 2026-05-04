@@ -53,6 +53,24 @@
       "scale" : 3,
       "number_of_frames" : 12,
       "dt_per_frame" : 0.038
+    },
+    {
+      "name" : "attacking",
+      "filename" : "_attack_combo.png",
+      "location" : [0,0],
+      "size" : [120,80],
+      "scale" : 3,
+      "number_of_frames" : 10,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "dying",
+      "filename" : "_death.png",
+      "location" : [0,0],
+      "size" : [120,80],
+      "scale" : 3,
+      "number_of_frames" : 10,
+      "dt_per_frame" : 0.1
     }
   ],
   "physics" : {
@@ -65,8 +83,10 @@
     "terminal_velocity" : 15.0
   },
   "size" : [1,2],
-  "health" : 10,
-  "max_health" : 10,
-  "damage" : 2,
-  "detection_distance" : [0,0]
+  "health" : 30,
+  "max_health" : 30,
+  "damage" : 5,
+  "detection_distance" : [0,0],
+  "invulnerable" : false,
+  "attack_range" : 3
 }

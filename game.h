@@ -4,7 +4,7 @@
 #include "audio.h"
 #include "graphics.h"
 
-enum class GameMode{Playing, GameOver};
+enum class GameMode{Playing, GameOver, Win};
 
 class Game {
 public:
@@ -37,6 +37,7 @@ private:
     int current_level{0};
     void load_level();
     void update_enemy(GameObject& obj);
+    bool final_level{false};
 
     //game state
     GameMode mode{GameMode::Playing};

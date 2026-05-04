@@ -2,37 +2,37 @@
   "sprites" : [
     {
       "name" : "idle",
-      "filename" : "skeleton.png",
-      "location" : [0, 96],
-      "size" : [32, 32],
-      "scale" : 2,
+      "filename" : "skeleton-idle.png",
+      "location" : [0, 0],
+      "size" : [64, 64],
+      "scale" : 4,
       "number_of_frames" : 4,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "running",
-      "filename" : "skeleton.png",
-      "location" : [0, 64],
-      "size" : [32, 32],
-      "scale" : 2,
+      "filename" : "skeleton-running.png",
+      "location" : [0, 0],
+      "size" : [64, 64],
+      "scale" : 4,
       "number_of_frames" : 12,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "attacking",
-      "filename" : "skeleton.png",
+      "filename" : "skeleton-attack.png",
       "location" : [0, 0],
-      "size" : [32, 32],
-      "scale" : 2,
+      "size" : [64, 64],
+      "scale" : 4,
       "number_of_frames" : 13,
       "dt_per_frame" : 0.1
     },
     {
       "name" : "dying",
-      "filename" : "skeleton.png",
-      "location" : [0, 32],
-      "size" : [32, 32],
-      "scale" : 2,
+      "filename" : "skeleton-death.png",
+      "location" : [0, 0],
+      "size" : [64, 64],
+      "scale" : 4,
       "number_of_frames" : 13,
       "dt_per_frame" : 0.1
     }
@@ -42,13 +42,15 @@
     "acceleration" : [0, -30],
     "gravity": -30.0,
     "damping": 0.9,
-    "walk_acceleration": 60.0,
+    "walk_acceleration": 20.0,
     "jump_velocity": 20.0,
     "terminal_velocity": 30.0
   },
-  "size": [1,1],
-  "health" : 10,
-  "max_health" : 10,
-  "damage" : 2,
-  "detection_distance" : [0,0]
+  "size": [1,2],
+  "health" : 15,
+  "max_health" : 15,
+  "damage" : 4,
+  "detection_distance" : [5,2],
+  "invulnerable" : false,
+  "attack_range" : 0
 }

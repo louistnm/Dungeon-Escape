@@ -1,0 +1,93 @@
+{
+  "backgrounds": [
+    {
+      "distance": 4.0,
+      "filename": "BG1.png",
+      "scale": 5.0
+    },
+    {
+      "distance": 2.0,
+      "filename": "BG2.png",
+      "scale": 5.0
+    },
+    {
+      "distance": 1.0,
+      "filename": "BG3.png",
+      "scale": 5.0
+    }
+  ],
+  "enemies": [
+    {
+      "enemy": "hell-hound",
+      "pos": [
+        13.0,
+        2.0
+      ]
+    }
+  ],
+  "height": 100,
+  "player_spawn_location": [
+    2,
+    2
+  ],
+  "sounds": [
+    {
+      "filename": "haunted_house_theme.mp3",
+      "loop_forever": true,
+      "name": "background"
+    },
+    {
+      "filename": "jump.wav",
+      "loop_forever": false,
+      "name": "jump"
+    },
+    {
+      "filename": "dark_souls_death.mp3",
+      "loop_forever": false,
+      "name": "death"
+    },
+    {
+      "filename": "hurt.wav",
+      "loop_forever": false,
+      "name": "hurt"
+    },
+    {
+      "filename": "foley_footstep_concrete_2.wav",
+      "loop_forever": false,
+      "name": "step"
+    },
+    {
+      "filename": "retro_magic_protection_25.wav",
+      "loop_forever": false,
+      "name": "necromancer"
+    },
+    {
+      "filename": "retro_wolf_b_02.wav",
+      "loop_forever": false,
+      "name": "wolf"
+    },
+    {
+      "filename": "enemy_felled.mp3",
+      "loop_forever": false,
+      "name": "win"
+    },
+    {
+      "filename": "sword_slice.wav",
+      "loop_forever": false,
+      "name": "sword"
+    }
+  ],
+  "tile_filenames": [
+    "dungeon_sprites.json"
+  ],
+  "tiles": [
+    {
+      "pos": [
+        29,
+        30
+      ],
+      "tile": "dungeon_sprites.json:brick_left_middle"
+    }
+  ],
+  "width": 30
+}

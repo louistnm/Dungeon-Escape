@@ -26,6 +26,7 @@ public:
     void render(const std::vector<Background>& backgrounds) const;
 
     void render_game_over();
+    void render_win();
 
 private:
     Graphics& graphics;

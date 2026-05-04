@@ -104,11 +104,12 @@ void LevelDesigner::input() {
         place_enemy("skeleton");
     }
     if (keys[SDL_SCANCODE_3]) {
-        place_enemy("nightborne");
-    }
-    if (keys[SDL_SCANCODE_4]) {
         place_enemy("necromancer");
     }
+
+    // if (keys[SDL_SCANCODE_4]) {
+    //     place_enemy("nightborne");
+    // }
 
     // timer for scrolling
     if (lag < dt) {

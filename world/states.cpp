@@ -7,7 +7,8 @@
 #include "game_object.h"
 #include "random.h"
 #include "world.h"
-#include <iostream>
+
+#include "audio.h"
 
 
 //Helper function
@@ -45,16 +46,13 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
     } else if (action_type == ActionType::SprintLeft) {
         obj.fsm->transition(Transition::Sprint, world, obj);
         return new SprintLeft();
-    } else if (action_type == ActionType::RollRight) {
-        obj.fsm->transition(Transition::Roll, world, obj);
-        return new RollRight();
-    } else if (action_type == ActionType::RollLeft) {
-        obj.fsm->transition(Transition::Roll, world, obj);
-        return new RollLeft();
     } else if (action_type == ActionType::AttackAll) {
         obj.fsm->transition(Transition::AttackAll, world, obj);
     } else if (obj.taken_damage) {
         obj.fsm->transition(Transition::Hit, world, obj);
+    } else if (action_type == ActionType::Attack) {
+        obj.fsm->transition(Transition::Attack, world, obj);
+        return new Attack();
     }
     return nullptr;
 }
@@ -81,14 +79,15 @@ Action* Waiting::input(World& world, GameObject& obj, ActionType action_type) {
         return Standing::input(world, obj, action_type);
     }
     //check when player is left of enemy and within detection distance
-    if (world.player->physics.position.x + 10 >= obj.physics.position.x && world.player->physics.position.x < obj.physics.position.x) {
+    if (std::abs(world.player->physics.position.x - obj.physics.position.x) <= obj.detection_distance.x && world.player->physics.position.x < obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
         obj.fsm->transition(Transition::Target, world, obj);
     }
 
     //check when player is right of enemy and within detection distance
-    if (world.player->physics.position.x - 10 <= obj.physics.position.x && world.player->physics.position.x > obj.physics.position.x) {
+    else if (std::abs(world.player->physics.position.x - obj.physics.position.x) <= obj.detection_distance.x && world.player->physics.position.x > obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
         obj.fsm->transition(Transition::Target, world, obj);
     }
+
     return Standing::input(world, obj, ActionType::None);
 }
 
@@ -114,6 +113,7 @@ void InAir::update(World& world, GameObject& obj, double dt) {
         obj.fsm->transition(Transition::Hit, world, obj);
     }
     if (elapsed <= 0 && on_platform(world,obj)) {
+        world.audio->play_sounds("step");
         obj.fsm->transition(Transition::Stop, world, obj);
     }
 }
@@ -154,6 +154,7 @@ Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
 }
 
 void Running::update(World& world, GameObject& obj, double) {
+
     if (!on_platform(world, obj)) {
         if (obj.physics.acceleration.x > 0) {
             obj.physics.acceleration.x = 0.5*obj.physics.walk_acceleration;
@@ -172,6 +173,7 @@ void Patrolling::on_enter(World& world, GameObject& obj) {
     elapsed = 0;
     cooldown = randint(4,6);
     Running::on_enter(world, obj);
+
 }
 
 Action* Patrolling::input(World& world, GameObject& obj, ActionType action_type) {
@@ -182,16 +184,18 @@ Action* Patrolling::input(World& world, GameObject& obj, ActionType action_type)
         return Running::input(world, obj, ActionType::None); //collided left wall
     } else if (world.collides({obj.physics.position.x + obj.size.x + epsilon, obj.physics.position.y + obj.size.y - epsilon})) {
         return Running::input(world, obj, ActionType::None); //collided right wall
+    } else if (on_platform(world, obj) && !world.collides({obj.physics.position.x + epsilon, obj.physics.position.y - epsilon}) && elapsed >= 0.35 && obj.obj_name != "necromancer") {
+        return Running::input(world, obj, ActionType::None);
+    } else if (!on_platform(world, obj) && !world.collides({obj.physics.position.x + obj.size.x - epsilon, obj.physics.position.y - epsilon}) && elapsed >= 0.35 && obj.obj_name != "necromancer") {
+        return Running::input(world, obj, ActionType::None);
     }
-    //check when player is left of enemy and within detection distance
-    if (world.player->physics.position.x + 10 >= obj.physics.position.x && world.player->physics.position.x < obj.physics.position.x) {
+
+    //check when player is within detection distance
+    if (std::abs(world.player->physics.position.x - obj.physics.position.x) <= obj.detection_distance.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
         obj.fsm->transition(Transition::Target, world, obj);
     }
 
     //check when player is right of enemy and within detection distance
-    if (world.player->physics.position.x - 10 <= obj.physics.position.x && world.player->physics.position.x > obj.physics.position.x) {
-        obj.fsm->transition(Transition::Target, world, obj);
-    }
     return Running::input(world, obj, action_type);
 }
 
@@ -284,6 +288,7 @@ void Falling::update(World& world, GameObject& obj, double dt) {
         obj.fsm->transition(Transition::Hit, world, obj);
     }
     if (elapsed <= 0 && on_platform(world, obj)) {
+        world.audio->play_sounds("step");
         obj.fsm->transition(Transition::Stop, world, obj);
     }
 }
@@ -317,25 +322,28 @@ void AttackAllEnemies::update(World& world, GameObject& obj, double dt) {
 
 void Targeting::on_enter(World& world, GameObject& obj) {
     obj.color = {0, 0, 0, 255};
+    if (obj.obj_name == "hell-hound") {
+        world.audio->play_sounds("wolf");
+    }
 }
 
 void Targeting::update(World& world, GameObject& obj, double dt) {
     if (elapsed >= cooldown) {
+        if (obj.obj_name == "hell-hound") {
+            obj.set_sprite("attacking");
+        }
         // check if player is still within detection range
-        obj.set_sprite("attacking");
         //check when player is left of enemy and within detection distance
-        if (world.player->physics.position.x + obj.detection_distance.x >= obj.physics.position.x && world.player->physics.position.x < obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
+        if (std::abs(world.player->physics.position.x - obj.physics.position.x) <= obj.detection_distance.x && world.player->physics.position.x < obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
             obj.physics.acceleration.x = -obj.physics.walk_acceleration *1.5;
             elapsed = 0;
         }
 
         //check when player is right of enemy and within detection distance
-        else if (world.player->physics.position.x - obj.detection_distance.x <= obj.physics.position.x && world.player->physics.position.x > obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
+        else if (std::abs(world.player->physics.position.x - obj.physics.position.x) <= obj.detection_distance.x && world.player->physics.position.x > obj.physics.position.x && std::abs(world.player->physics.position.y-obj.physics.position.y ) <= obj.detection_distance.y) {
             obj.physics.acceleration.x = obj.physics.walk_acceleration * 1.5;
             elapsed = 0;
-        }
-
-        else {
+        } else {
             obj.fsm->transition(Transition::Stop, world, obj);
         }
     }
@@ -356,6 +364,7 @@ void Knocked::on_enter(World& world, GameObject& obj) {
     } else if (obj.damage_direction == 1) {
         obj.physics.velocity = {-10,10};
     }
+    world.audio->play_sounds("hurt");
 }
 
 void Knocked::update(World& world, GameObject& obj, double dt) {
@@ -363,6 +372,27 @@ void Knocked::update(World& world, GameObject& obj, double dt) {
     if (!on_platform(world, obj) && elapsed >= cooldown) {
         obj.fsm->transition(Transition::Fall, world, obj);
     }
+    else if (elapsed >= cooldown) {
+        obj.fsm->transition(Transition::Stop, world, obj);
+    }
 }
 
+///////
+///Player Attack
+///////
 
+void Attacking::on_enter(World& world, GameObject& obj) {
+    elapsed = cooldown;
+    obj.color = {0, 255, 0, 255};
+    obj.set_sprite("attacking");
+}
+
+void Attacking::update(World& world, GameObject& obj, double dt) {
+    elapsed -= dt;
+    if (obj.taken_damage) {
+        obj.fsm->transition(Transition::Hit, world, obj);
+    }
+    if (elapsed <= 0) {
+        obj.fsm->transition(Transition::Stop, world, obj);
+    }
+}

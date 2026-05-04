@@ -7,7 +7,7 @@
       "size" : [64, 32],
       "scale" : 3,
       "number_of_frames" : 6,
-      "dt_per_frame" : 0.1
+      "dt_per_frame" : 0.2
     },
     {
       "name" : "running",
@@ -47,8 +47,10 @@
     "terminal_velocity": 30.0
   },
   "size": [2,1],
-  "health" : 20,
-  "max_health" : 20,
+  "health" : 15,
+  "max_health" : 15,
   "damage" : 3,
-  "detection_distance" : [10,5]
+  "detection_distance" : [8,3],
+  "invulnerable" : false,
+  "attack_range" : 0
 }

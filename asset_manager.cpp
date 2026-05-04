@@ -63,6 +63,8 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
     obj.max_health = json.at("max_health").get<int>();
     obj.damage = json.at("damage").get<int>();
     obj.detection_distance = json.at("detection_distance").get<Vec<int>>();
+    obj.invulnerable = json.at("invulnerable").get<bool>();
+    obj.attack_range = json.at("attack_range").get<double>();
 
     obj.set_sprite("idle");
 

@@ -59,5 +59,7 @@
   "health" : 10,
   "max_health" : 10,
   "damage" : 2,
-  "detection_distance" : [0,0]
+  "detection_distance" : [0,0],
+  "invulnerable" : false,
+  "attack_range" : 0
 }
